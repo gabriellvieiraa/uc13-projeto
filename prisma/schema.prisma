@@ -27,6 +27,7 @@ model User {
   @@map("users")
 }
 
+<<<<<<< HEAD
 // Tabela de junção para relação N:N entre Category e User
 model CategoryOnUser {
   categoryId Int      @map("category_id")
@@ -39,3 +40,17 @@ model CategoryOnUser {
   @@id([categoryId, userId])
   @@map("category_user")
 }
+=======
+
+
+
+model Category {
+  id                Int         @id @defalt(autoincrement())
+  name              String      
+  urlImg            String      @map("url_img")
+  description       String
+  courses           Course[]
+  users             User[]
+}
+
+>>>>>>> 40404c57a5b389d31548a024b14fb0765c180921
