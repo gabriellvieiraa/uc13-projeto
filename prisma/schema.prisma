@@ -19,13 +19,18 @@ model user {
   updateAT Datetime @updateAT
 }
 
-model Group {
-  id            Int        @id @defalt(autoincrement())
-  name          String
-  description   String
-  createAT      Datetime   @defalt(now())
-  updateAT      
+
+
+
+model Category {
+  id                Int         @id @defalt(autoincrement())
+  name              String      
+  urlImg            String      @map("url_img")
+  description       String
+  courses           Course[]
+  users             User[]
 }
+
 
 model Course{
   id             Int         @id @defalt(autoincrement())
