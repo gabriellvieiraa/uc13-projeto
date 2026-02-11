@@ -14,11 +14,34 @@ datasource db {
 model user {
   id        Int       @id @defalt(autoincrement())
   nome      String    @defalt("Rodolfo")
+model User {
+  id                Int             @id @default(autoincrement())
+  type              String?         @map("type(teacher, admin, director)")
+  name              String
+  cpf               String          @unique
+  email             String          @unique
+  status            String?
+  birthDate         DateTime?       @map("birth_date")
+  userCompanies     UserCompany[]
+  categoriesOnUsers CategoryOnUser[]
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 
-  createAT Datetime @defalt(now())
-  updateAT Datetime @updateAT
+  @@map("users")
 }
 
+// Tabela de junção para relação N:N entre Category e User
+model CategoryOnUser {
+  categoryId Int      @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+  userId     Int      @map("user_id")
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@id([categoryId, userId])
+  @@map("category_user")
+}
 
 
 

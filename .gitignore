@@ -23,18 +23,6 @@ datasource db {
 
 
 
-model UserCompany {
-  id         Int    @map @id @default(autoincrement())
-
-  user       User    @relation(fields: [userId], references: [id])
-  userId     Int    @map
-
-  company    Company @relation(fields: [companyId], references: [id])
-  companyId  Int
-  createdAt DateTime @default(now())
-  updateAt DataTime @updateAt
-  
-
 }
 
 
