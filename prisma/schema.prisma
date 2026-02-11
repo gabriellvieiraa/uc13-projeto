@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id        INT       @id @defalt(autoincrement())
+  nome      String    @defalt("Rodolfo")
+
+  createAT Datetime @defalt(now())
+  updateAT Datetime @updateAT
+}
+
+model Group {
+  id            Int        @id @defalt(autoincrement())
+  name          String
+  description   String
+  createAT      Datetime   @defalt(now())
+  updateAT      
+}
