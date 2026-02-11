@@ -12,7 +12,7 @@ datasource db {
 }
 
 model user {
-  id        INT       @id @defalt(autoincrement())
+  id        Int       @id @defalt(autoincrement())
   nome      String    @defalt("Rodolfo")
 
   createAT Datetime @defalt(now())
@@ -27,4 +27,20 @@ model Group {
   updateAT      
 }
 
-gabriel
+model Course{
+  id             Int         @id @defalt(autoincrement())
+  name           String
+  description    String
+  workload       Float?
+  ranking        Int
+   
+  companyId      Int         @map("company_id")
+  categoryId     Int         @map("category_id")
+  
+
+  createdAt      Datetime    @defalt(now())
+  updatedAt      Datetime    @updatedAt
+
+}
+
+
