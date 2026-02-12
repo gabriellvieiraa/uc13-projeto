@@ -29,6 +29,7 @@ model User {
 
   @@map("users")
 }
+}
 
 // Tabela de junção para relação N:N entre Category e User
 model CategoryOnUser {
