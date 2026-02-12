@@ -67,9 +67,9 @@ model Course{
   workload       Float?
   ranking        Int
    
-  companyId      Int         @map("company_id")
-  categoryId     Int         @map("category_id")
-  
+  categories     Category[]  @relation("category_course")
+  companies      Company[]   @relation("")
+
 
   createdAt      Datetime    @defalt(now())
   updatedAt      Datetime    @updatedAt
