@@ -27,20 +27,28 @@ model User {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
 
+}
   @@map("users")
 }
 
-// Tabela de junção para relação N:N entre Category e User
-model CategoryOnUser {
-  categoryId Int      @map("category_id")
-  category   Category @relation(fields: [categoryId], references: [id])
-  userId     Int      @map("user_id")
-  user       User     @relation(fields: [userId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model Company {
+  id          Int      @id @default(autoincrement())
+  name        String
+  address     String
+  cnpj        String
+  foundation  DateTime
+  places      String
+  fundaments  String
+  methods     String
 
-  @@id([categoryId, userId])
-  @@map("category_user")
+  courses     Course[]   // relação 1:N (uma empresa tem vários cursos)
+
+  createdAt DataTime  
+  updateAt    DataTime  @updateAt
+  
+}
+
+
 }
 
 
