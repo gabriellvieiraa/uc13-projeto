@@ -19,54 +19,53 @@ model User {
   email             String          @unique
   status            String?
   birthDate         DateTime?       @map("birth_date")
-  userCompanies     UserCompany[]
-  categoriesOnUsers CategoryOnUser[]
+
+
+
+  companies         Company[]       @relation("user_company) 
+  categories        Category[]      @relation("user_category) 
+
+
+
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
 
   @@map("users")
 }
 
-Group userCompanies {
-  id          Int  Group    @id @default(autoincrement())
-  name        String
-  address     String
-  cnpj        String
-  foundation  DateTime
-  places      String
-  fundaments  String
-  methods     String
 
-  courses     Course[]   // relação 1:N (uma empresa tem vários cursos)
+model Company {
+  id            Int  Group    @id @default(autoincrement())
+  name          String        @unique
+  cnpj          String        @unique
+  foundation    DateTime      
+  places        String
+  fundaments    String
+  methods       String
 
-  createdAt DataTime  
-  updateAt    DataTime  @updateAt
-  
+  users         User[]        @relation("user_company")
+  courses       Course[]    
+
+
+  createdAt     Datetime      @defalt(now())
+  updatedAt     Datetime      @updatedAt
 }
-
-
-// Tabela de junção para relação N:N entre Category e User
-model CategoryOnUser {
-  categoryId Int      @map("category_id")
-  category   Category @relation(fields: [categoryId], references: [id])
-  userId     Int      @map("user_id")
-  user       User     @relation(fields: [userId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-}
-
 
 
 model Category {
   id                Int         @id @defalt(autoincrement())
-  name              String      
+  name              String      @unique
   urlImg            String      @map("url_img")
   description       String
   courses           Course[]    @relation("category_course")
-  users             User[]
-
+  users             User[]      @relation("user_category) 
+  
   @@map("categories")
+
+  createdAt         Datetime    @defalt(now())
+  updatedAt         Datetime    @updatedAt
+
+  
 }
 
 
@@ -74,14 +73,14 @@ model Category {
 
 model Course{
   id             Int         @id @defalt(autoincrement())
-  name           String
+  name           String      @unique
   description    String
   workload       Float?
   ranking        Int
   fieldOfStudy   String     @map("Field_of_study")
    
   categories     Category[]  @relation("category_course")
-  companyId       Int        @map("company_user")
+  companyId       Int        @map("company_id")
   company         Company    @relation(fields: [companyId], references: [id])
 
   
