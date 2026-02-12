@@ -63,7 +63,12 @@ model Course{
   ranking        Int
    
   categories     Category[]  @relation("category_course")
-  companies      Company[]   @relation("")
+  companyId       Int        @map("company_user")
+  company         Company    @relation(fields: [companyId], references: [id])
+
+  
+  @@map("courses")
+
 
 
   createdAt      Datetime    @defalt(now())
