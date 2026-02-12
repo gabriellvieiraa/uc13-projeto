@@ -78,6 +78,7 @@ model Course{
   description    String
   workload       Float?
   ranking        Int
+  fieldOfStudy   String     @map("Field_of_study")
    
   categories     Category[]  @relation("category_course")
   companyId       Int        @map("company_user")
