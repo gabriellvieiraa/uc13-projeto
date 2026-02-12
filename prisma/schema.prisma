@@ -62,8 +62,8 @@ model Course{
   workload       Float?
   ranking        Int
    
-  categories     Category[]
-  companies      Company[]
+  categories     Category[]  @relation("category_course")
+  companies      Company[]   @relation("")
 
 
   createdAt      Datetime    @defalt(now())
