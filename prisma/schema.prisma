@@ -81,7 +81,7 @@ model Course{
   fieldOfStudy   String     @map("Field_of_study")
    
   categories     Category[]  @relation("category_course")
-  companyId       Int        @map("company_user")
+  companyId       Int        @map("company_id")
   company         Company    @relation(fields: [companyId], references: [id])
 
   
