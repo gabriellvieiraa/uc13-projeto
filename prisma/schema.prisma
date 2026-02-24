@@ -22,8 +22,8 @@ model User {
 
 
 
-  companies         Company[]       @relation("user_company) 
-  categories        Category[]      @relation("user_category) 
+  companies         Company[]       @relation("user_company") 
+  categories        Category[]      @relation("user_category") 
 
 
 
@@ -35,7 +35,7 @@ model User {
 
 
 model Company {
-  id            Int  Group    @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   name          String        @unique
   cnpj          String        @unique
   foundation    DateTime      
@@ -47,23 +47,23 @@ model Company {
   courses       Course[]    
 
 
-  createdAt     Datetime      @defalt(now())
-  updatedAt     Datetime      @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 
 model Category {
-  id                Int         @id @defalt(autoincrement())
+  id                Int         @id @default(autoincrement())
   name              String      @unique
   urlImg            String      @map("url_img")
   description       String
   courses           Course[]    @relation("category_course")
-  users             User[]      @relation("user_category) 
+  users             User[]      @relation("user_category") 
   
   @@map("categories")
 
-  createdAt         Datetime    @defalt(now())
-  updatedAt         Datetime    @updatedAt
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
 
   
 }
@@ -72,7 +72,7 @@ model Category {
 
 
 model Course{
-  id             Int         @id @defalt(autoincrement())
+  id             Int         @id @default(autoincrement())
   name           String      @unique
   description    String
   workload       Float?
@@ -88,8 +88,8 @@ model Course{
 
 
 
-  createdAt      Datetime    @defalt(now())
-  updatedAt      Datetime    @updatedAt
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 
 }
 
