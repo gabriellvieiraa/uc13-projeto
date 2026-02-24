@@ -4,3 +4,6 @@ import { createCourse } from '../services/course';
 const router= Router();
 
 router.post('/' , createCourse); 
+
+
+export default router;
