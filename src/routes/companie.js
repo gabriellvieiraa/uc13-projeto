@@ -5,4 +5,4 @@ import { createCompanie } from "../services/companie";
 
 const router = Router();
 
-router.post('/create',createCompanie);
+router.post('/',createCompanie);
