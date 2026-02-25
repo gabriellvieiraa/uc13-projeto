@@ -7,3 +7,4 @@ const router = Router();
 
 router.post('/',createCompanie); //create e post são a mesma coisa
 
+export default router;
