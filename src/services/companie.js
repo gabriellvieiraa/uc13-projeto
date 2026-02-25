@@ -1,6 +1,6 @@
-import { PrismaCliet } from "@prisma/client"
+import { PrismaClient } from "@prisma/client"
 import { z } from 'zod'
-const prisma = new PrismaCliet();
+const prisma = new PrismaClient();
 
 //req: requisição o que esta vindo do frontend
 //req: responde o que eu vou responder
