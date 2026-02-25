@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createCategorie } from '../services/categorie';
+import { createCategorie } from '../services/categorie.js';
 
 const router = Router();
 

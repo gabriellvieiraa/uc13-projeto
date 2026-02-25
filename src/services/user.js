@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { z } from 'zod';
-const prisma=PrismaClient();     //função
+const prisma = new PrismaClient();     //função
 //com esse prisma eu consigo acessar o banco de dados
 
 //Fazer uma função que vai manipular o banco de dados. O CRUD cria
