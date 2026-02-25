@@ -7,3 +7,4 @@ const router = Router();
 // O post vai criar um usuário
 router.post('/create' , createUser); //aqui é só a barrinha. Desse jeito fica mais simples, todos os erros ficam num arquivo só
 
+export default router; //perguntar se devo colocar
