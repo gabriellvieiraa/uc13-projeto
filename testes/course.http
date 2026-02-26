@@ -1,0 +1,11 @@
+POST http://localhost:3000/course HTTP/1.1
+content-type: application/json
+
+{
+    "name":"Tecnico em Informatica",
+    "description" : "O curso Técnico em Informática prepara profissionais para atuar em diversas áreas da tecnologia da informação",
+    "workload": 2000,
+    "ranking": 1, 
+    "fieldOfStudy":"Tecnologia",
+    "companyId":1 
+}
