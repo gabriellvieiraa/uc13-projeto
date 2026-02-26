@@ -10,13 +10,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserType {
+  TEACHER
+  ADMIN
+  DIRECTOR
+}
+
+enum UserStatus {
+  ATIVO
+  INATIVO
+}
+
 model User {
   id                Int             @id @default(autoincrement())
-  type              String?         @map("type(teacher, admin, director)")
+  type              UserType?
   name              String
   cpf               String          @unique
   email             String          @unique
-  status            String?
+  status            UserStatus?
   birthDate         DateTime?       @map("birth_date")
 
 
@@ -91,5 +102,3 @@ model Course{
   updatedAt      DateTime    @updatedAt
 
 }
-
-

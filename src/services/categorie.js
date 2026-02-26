@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 export async function createCategorie(req, res, _next){
     const data = req.body
-    let u = await prisma.categorie.create({data});
+    let u = await prisma.category.create({data});
     return res.status(201).json(u);
 
 }
