@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 export async function createCompanie(req, res, _next){
     const data = req.body;
-    let u =  await prisma.companie.create({data});
+    let u =  await prisma.company.create({data});
     return res.status(201).json(u);
   
 
