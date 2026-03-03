@@ -16,3 +16,8 @@ export async function createCompanie(req, res, _next){
 
 
 }
+
+export async function readCompanie(req, res, _next) {
+    let companies = await prisma.companie.findMany();
+    return res.status(200).json(companies)
+}

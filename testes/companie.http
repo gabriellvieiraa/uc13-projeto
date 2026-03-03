@@ -1,3 +1,4 @@
+#### criando companhia 
 POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
 
@@ -9,3 +10,7 @@ content-type: application/json
     "fundaments": "Vendas",    
     "methods": "Superior"         
 }
+
+### Listar todas as companhias
+GET http://localhost:3000/companie HTTP/1.1
+content-type: application/json
