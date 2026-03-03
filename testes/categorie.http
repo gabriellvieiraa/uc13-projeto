@@ -1,3 +1,4 @@
+### criando categoria
 POST http://localhost:3000/categorie HTTP/1.1
 content-type: application/json
 
@@ -6,3 +7,9 @@ content-type: application/json
     "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",            
     "description":"Curso presencial e a distância na área de gastronomia, focando em conceitos, estilos e técnicas da área."       
 }
+
+### Listar todas as categorias
+GET http://localhost:3000/categorie/ HTTP/1.1
+content-type: application/json
+
+
