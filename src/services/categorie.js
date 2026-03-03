@@ -12,3 +12,8 @@ export async function createCategorie(req, res, _next){
     return res.status(201).json(u);
 
 }
+
+export async function readCategorie(req, res, _next){
+    let categories = await prisma.categorie.findMany();
+    return res.status(200).json(categories);
+}
