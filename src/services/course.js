@@ -23,5 +23,12 @@ export async function readCourse(req ,  res , _next) {
     let courses = await prisma.course.findMany();
     return res.status(200).json(courses);
     
+
 }
 
+export async function showCourse(req, res ,_next) {
+    let id = Number(req.params.id);
+    let c =await prisma.course.findFirst({where : {id:id}});
+    return res.status(200).json(c);
+    
+}
