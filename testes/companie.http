@@ -3,14 +3,26 @@ POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
 
 {
-    "name": "FEBEM",          
-    "cnpj": "12412412343293/0001",           
+    "name": "SERVICO NACIONAL DE APRENDIZAGEM COMERCIAL SENAC",          
+    "cnpj": "03.709.814/0051-57",           
     "foundation": "1970-05-12T03:00:00.000Z",       
-    "places": "Rua Paschoal Alce 310",      
-    "fundaments": "Vendas",    
+    "places": "RR EPISCOPAL 700",      
+    "fundaments": "Estudos",    
     "methods": "Superior"         
 }
 
-### Listar todas as companhias
+
+### Listar todos as companhias ? -> query
+### chave-valor
+
 GET http://localhost:3000/companie HTTP/1.1
 content-type: application/json
+
+### Mostrar uma unica companhia /2 => /:id , id se chama params
+
+GET http://localhost:3000/companie? HTTP/1.1
+content-type: application/json  
+
+###
+GET http://localhost:3000/companie/1 HTTP/1.1
+content-type: application/json  

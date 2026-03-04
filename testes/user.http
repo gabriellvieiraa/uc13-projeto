@@ -19,17 +19,27 @@ Content-Type: application/json
   "name": "Kevin",
   "cpf": "12345678911",
   "email": "kevin@email.com",
-  "type": "ADMIN",
+  "type": "TEACHER",
   "status": "INATIVO",
   "birthDate": "2005-05-10T00:00:00.000Z"
 }
 
 
 ### Listar todos os usuários
-GET http://localhost:3000/user/ HTTP/1.1
+### GET http://localhost:3000/user/ HTTP/1.1
+### content-type:aplication.json
+
+### Listar todos os usuários
+GET http://localhost:3000/user?name=Vanessa HTTP/1.1
 content-type:aplication.json
 
-### Mostrar um único usuário
+GET http://localhost:3000/user?status=ATIVO HTTP/1.1
+content-type:aplication.json
+
+GET http://localhost:3000/user?type=TEACHER HTTP/1.1
+content-type:aplication.json
+
+### Mostrar um único usuário0
 
 GET http://localhost:3000/user/2  HTTP/1.1 //dinamico
 content-type:aplication.json
