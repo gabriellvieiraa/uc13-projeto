@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 //next: proximo o que vou fazer seguir
 
 
- export  async function createCourse(req , res , _next){  /// _ DIZ O QUE NÃO VAMOS ULTILIZAR.
+export  async function createCourse(req , res , _next){  /// _ DIZ O QUE NÃO VAMOS ULTILIZAR.
 
     const data =req.body 
     let  c =  await prisma.course.create({data});
@@ -19,3 +19,16 @@ const prisma = new PrismaClient();
 
 }
 
+export async function readCourse(req ,  res , _next) {
+    let courses = await prisma.course.findMany();
+    return res.status(200).json(courses);
+    
+
+}
+
+export async function showCourse(req, res ,_next) {
+    let id = Number(req.params.id);
+    let c =await prisma.course.findFirst({where : {id:id}});
+    return res.status(200).json(c);
+    
+}
