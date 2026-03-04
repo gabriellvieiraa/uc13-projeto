@@ -1,0 +1,35 @@
+### criando um usuario completo
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Vanessa",
+  "cpf": "12345678900",
+  "email": "vanessa@email.com",
+  "type": "ADMIN",
+  "status": "ATIVO",
+  "birthDate": "1995-05-10T00:00:00.000Z"
+}
+
+### criando um usuario completo
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Kevin",
+  "cpf": "12345678911",
+  "email": "kevin@email.com",
+  "type": "ADMIN",
+  "status": "INATIVO",
+  "birthDate": "2005-05-10T00:00:00.000Z"
+}
+
+
+### Listar todos os usuários
+GET http://localhost:3000/user/ HTTP/1.1
+content-type:aplication.json
+
+### Mostrar um único usuário
+
+GET http://localhost:3000/user/2  HTTP/1.1 //dinamico
+content-type:aplication.json

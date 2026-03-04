@@ -17,11 +17,27 @@ const prisma = new PrismaClient();     //função
 
 }*/
 
+
+
 //async porque mandei a funcao esperar
-export async function createUser(rec, res, _next){   //eu preciso receber os dados do usuário - parâmetros do post _next (a barrinha é para ignorar)
+export async function createUser(req, res, _next){   //eu preciso receber os dados do usuário - parâmetros do post _next (a barrinha é para ignorar)
   const data = req.body; //talvez precisa tratar
   let u = await prisma.user.create({data}); //eu preciso que o banco de dados espere
   return res.status(201).json(u);
-  
 
+}
+
+
+//async porque mandei a funcao esperar
+export async function readUser(req, res, _next){   //eu preciso receber os dados do usuário - parâmetros do post _next (a barrinha é para ignorar)
+  const data = req.body; //talvez precisa tratar
+  let users = await prisma.user.findMany(); //eu preciso que o banco de dados espere
+  return res.status(200).json(users);
+}
+
+//async porque mandei a funcao esperar
+export async function showUser(req, res, _next){   //eu preciso receber os dados do usuário - parâmetros do post _next (a barrinha é para ignorar)
+  let id = Number(req.params.id);
+  let u = await prisma.user.findFirst({where: {id:id}});
+  return res.status(200).json(u);
 }
