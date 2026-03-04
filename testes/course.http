@@ -11,11 +11,24 @@ content-type: application/json
     "companyId":1 
 }
 
-### Listar todos os cursos
-GET http://localhost:3000/course/ HTTP/1.1
+### Listar todos os cursos ? -> query
+### chave=valor
+GET http://localhost:3000/course?name=Tecnico/ HTTP/1.1
 content-type: application/json
 
-### Mostrar um unico usuário
+###
+
+GET http://localhost:3000/course?workload=500/ HTTP/1.1
+content-type: application/json
+
+###
+GET http://localhost:3000/course?ranking=1/ HTTP/1.1
+content-type: application/json
+
+
+
+
+### Mostrar um unico usuário / 2 =>
 
 GET http://localhost:3000/course/2 HTTP/1.1
 content-type: application/json
