@@ -28,16 +28,39 @@ export async function createUser(req, res, _next){   //eu preciso receber os dad
 }
 
 
-//async porque mandei a funcao esperar
-export async function readUser(req, res, _next){   //eu preciso receber os dados do usuário - parâmetros do post _next (a barrinha é para ignorar)
-  const data = req.body; //talvez precisa tratar
-  let users = await prisma.user.findMany(); //eu preciso que o banco de dados espere
-  return res.status(200).json(users);
-}
 
 //async porque mandei a funcao esperar
 export async function showUser(req, res, _next){   //eu preciso receber os dados do usuário - parâmetros do post _next (a barrinha é para ignorar)
   let id = Number(req.params.id);
   let u = await prisma.user.findFirst({where: {id:id}});
   return res.status(200).json(u);
+}
+
+//async porque mandei a funcao esperar
+export async function readUser(req, res, _next) {
+  const { name, status, type, birth_min, birth_max } = req.query;
+  const consult = {}; // Objeto para montar a consulta
+
+  // Usando ifs 
+  if (name) consult.name = { contains: name };
+  if (status) consult.status = status;
+  if (type) consult.type = type;
+
+  //Lógica de mínimo e máximo para o aniversario
+  //Se houver data de início e fim, ele cria um filtro de período.
+  //gte: Maior ou igual à data mínima.
+  //lte: Menor ou igual à data máxima.
+  if (birth_min && birth_max) {
+    consult.birthDate = {
+      gte: new Date(birth_min),
+      lte: new Date(birth_max)
+    };
+  }
+
+  // Busca no banco de dados com os filtros montados
+  const users = await prisma.user.findMany({
+    where: consult
+  });
+
+  return res.status(200).json(users);
 }
