@@ -20,7 +20,25 @@ export  async function createCourse(req , res , _next){  /// _ DIZ O QUE NÃO VA
 }
 
 export async function readCourse(req ,  res , _next) {
-    let courses = await prisma.course.findMany();
+    const{name, workload_max,workload_min, ranking,ranking_max,ranking_min} =req.query;
+
+    let consult ={}
+
+    if(name) consult.name = {contains: "%"+name+"%"}
+
+    if(workload_max && workload_min)
+        consult.workload={
+            lt: Number(workload_max),
+            gt: Number(workload_min)
+        }
+    if(ranking) consult.ranking=Number(ranking)
+    if(ranking_max) consult.ranking={lt: Number(ranking_max)}
+    if(ranking_min) consult.ranking={gt: Number(ranking_min)}
+
+
+
+
+    let courses = await prisma.course.findMany({where : consult});
     return res.status(200).json(courses);
     
 
