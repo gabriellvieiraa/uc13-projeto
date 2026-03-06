@@ -20,11 +20,12 @@ export  async function createCourse(req , res , _next){  /// _ DIZ O QUE NÃO VA
 }
 
 export async function readCourse(req ,  res , _next) {
-    const{name, workload_max,workload_min, ranking,ranking_max,ranking_min} =req.query;
+    const{name,description ,workload_max,workload_min, ranking,ranking_max,ranking_min} =req.query;
 
     let consult ={}
 
     if(name) consult.name = {contains: "%"+name+"%"}
+    if(description) consult.description = {contains: "%"+description+"%"}
 
     if(workload_max && workload_min)
         consult.workload={

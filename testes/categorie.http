@@ -11,7 +11,7 @@ content-type: application/json
 
 ### Listar todas as categorias ? -> query
 ### chave=valor
-GET http://localhost:3000/categorie?name=Tecnologia HTTP/1.1
+GET http://localhost:3000/categorie?name=Medicina HTTP/1.1
 content-type: application/json
 
 ###
