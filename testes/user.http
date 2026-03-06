@@ -26,20 +26,31 @@ Content-Type: application/json
 
 
 ### Listar todos os usuários
-### GET http://localhost:3000/user/ HTTP/1.1
-### content-type:aplication.json
+GET http://localhost:3000/user/ HTTP/1.1
+content-type:aplication.json
 
-### Listar todos os usuários
+### Filtrar pelo atributo nome
 GET http://localhost:3000/user?name=Vanessa HTTP/1.1
 content-type:aplication.json
 
+### Filtrar pelo status
 GET http://localhost:3000/user?status=ATIVO HTTP/1.1
 content-type:aplication.json
 
+### Filtrar pelo tipo "TEACHER"
 GET http://localhost:3000/user?type=TEACHER HTTP/1.1
 content-type:aplication.json
 
-### Mostrar um único usuário0
-
-GET http://localhost:3000/user/2  HTTP/1.1 //dinamico
+### Filtrar pelo tipo "ADMIN"
+GET http://localhost:3000/user?type=ADMIN HTTP/1.1
 content-type:aplication.json
+
+### Mostrar um único usuário
+GET http://localhost:3000/user/2 HTTP/1.1 
+content-type:aplication.json
+
+### Listar usuários nascidos entre 1990 e 2000
+GET http://localhost:3000/user?birth_min=1990-01-01&birth_max=2000-12-31 HTTP/1.1
+content-type: application/json
+
+

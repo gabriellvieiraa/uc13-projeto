@@ -14,10 +14,15 @@ export async function createCategorie(req, res, _next){
 }
 
 export async function readCategorie(req, res, _next){
+    const {name, description} = req.query
 
-    
+    let consult = {}
 
-    let categories = await prisma.category.findMany();
+    if (name) consult.name = {contains: "%"+ name + "%"}
+    if (description) consult.description = {contains: "%" + description + "%"}
+
+
+    let categories = await prisma.category.findMany({where: consult});
     return res.status(200).json(categories);
 }
 
