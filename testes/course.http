@@ -58,7 +58,7 @@ content-type : application/json
 
 {
   "name":"Tecnico em Enfermagem",
-  "description" : "O curso Técnico em Informática prepara profissionais para atuar em diversas áreas da tecnologia da informação",
+  "description" : "O curso Técnico em Informática prepara profissionais para atuar em diversas áreas da tecnologia da informação"
 }
 
 ###
