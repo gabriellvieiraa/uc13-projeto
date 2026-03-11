@@ -1,7 +1,6 @@
 import {PrismaClient} from "@prisma/client";
 import { z } from 'zod';
 
-import { attachSave } from "./save";
 
 const prisma = new PrismaClient();
 
