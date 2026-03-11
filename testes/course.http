@@ -46,15 +46,27 @@ content-type: application/json
 GET http://localhost:3000/course?ranking_min=1 HTTP/1.1
 content-type: application/json
 
-
-###
-
-
-
-
-
 ### Mostrar um unico usuário / 2 =>
 
 GET http://localhost:3000/course/ HTTP/1.1
 content-type: application/json
 
+### Realiza uma mudança;
+
+PUT http://localhost:3000/course/99 HTTP/1.1
+content-type : application/json
+
+{
+  "name":"Tecnico em Enfermagem",
+  "description" : "O curso Técnico em Informática prepara profissionais para atuar em diversas áreas da tecnologia da informação",
+}
+
+###
+PUT http://localhost:3000/course/1 HTTP/1.1
+content-type: application/json
+
+
+{
+  "name":"Tecnico em Batatinha"
+ 
+}
