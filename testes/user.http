@@ -53,4 +53,12 @@ content-type:aplication.json
 GET http://localhost:3000/user?birth_min=1990-01-01&birth_max=2000-12-31 HTTP/1.1 //coment
 content-type: application/json
 
+### Mostrar o usuário que eu quero editar
+PUT http://localhost:3000/user/2 HTTP/1.1
+Content-Type: application/json
 
+{
+  "name": "Lucas",
+  "email": "lucas@email.com",
+  "birthDate": "2006-05-10T00:00:00.000Z"
+}
