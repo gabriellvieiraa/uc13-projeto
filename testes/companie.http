@@ -27,6 +27,7 @@ content-type: application/json
 GET http://localhost:3000/companie/1 HTTP/1.1
 content-type: application/json  
 
+<<<<<<< HEAD
 ### editar
 PUT http://localhost:3000/companie/2
 content-type: application/json
@@ -39,3 +40,6 @@ content-type: application/json
     "fundaments": "Estudos",    
     "methods": "Superior"         
 }
+=======
+
+>>>>>>> 604e07573747338726f3283ddaf0292407dcbed7

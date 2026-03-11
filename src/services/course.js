@@ -1,6 +1,8 @@
 import {PrismaClient} from "@prisma/client";
 import { z } from 'zod';
 
+import { attachSave } from "./save.js";
+
 const prisma = new PrismaClient();
 
 //req: requisição o que está vindo do Frontend
@@ -49,5 +51,36 @@ export async function showCourse(req, res ,_next) {
     let id = Number(req.params.id);
     let c =await prisma.course.findFirst({where : {id:id}});
     return res.status(200).json(c);
+    
+}
+
+export async function editCourse(req , res ,_next) {
+    const{name,description} =req.body;
+    let id = Number(req.params.id);
+    let c =await prisma.course.findFirst({where : {id:id}});
+
+    if(!c){
+        return res.status(404).json("Não encontrei " + id)
+    };
+
+    c = attachSave(c,'course')
+
+    if(name)c.name = name;
+    if(description)c.description =description;
+
+    await c.save();
+
+    
+
+
+
+
+    
+    return res.status(202).json(c);
+
+
+
+
+
     
 }
