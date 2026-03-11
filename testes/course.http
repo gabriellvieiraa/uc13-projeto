@@ -13,23 +13,48 @@ content-type: application/json
 
 ### Listar todos os cursos ? -> query
 ### chave=valor
-GET http://localhost:3000/course?name=Tecnico/ HTTP/1.1
+
+
+### Names
+GET http://localhost:3000/course?name=Inf HTTP/1.1
+content-type: application/json
+
+### Description
+GET http://localhost:3000/course?description=Inf HTTP/1.1
+
+
+### Workload
+
+GET http://localhost:3000/course?workload_max=2000  HTTP/1.1
 content-type: application/json
 
 ###
+GET http://localhost:3000/course?workload_min=100  HTTP/1.1
+content-type: application/json
 
-GET http://localhost:3000/course?workload=500/ HTTP/1.1
+
+
+### Rankings
+GET http://localhost:3000/course?ranking HTTP/1.1
 content-type: application/json
 
 ###
-GET http://localhost:3000/course?ranking=1/ HTTP/1.1
+GET http://localhost:3000/course?ranking_max=5 HTTP/1.1
 content-type: application/json
+
+###
+GET http://localhost:3000/course?ranking_min=1 HTTP/1.1
+content-type: application/json
+
+
+###
+
 
 
 
 
 ### Mostrar um unico usuário / 2 =>
 
-GET http://localhost:3000/course/2 HTTP/1.1
+GET http://localhost:3000/course/ HTTP/1.1
 content-type: application/json
 
