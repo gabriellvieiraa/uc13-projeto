@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import { createCategorie, readCategorie } from '../services/categorie.js';
+import { createCategorie, editCategorie, readCategorie, showCategorie } from '../services/categorie.js';
 
 const router = Router();
 
 router.post('/', createCategorie);  //create e post são a mesma coisa 
 router.get('/', readCategorie);
+router.get('/id', showCategorie);
+router.put('/:id', editCategorie);
 
 export default router;
