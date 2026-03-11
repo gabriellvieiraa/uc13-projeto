@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { z } from 'zod';
 const prisma = new PrismaClient();     //função
+import {attachSave} from "../utils/save.js";
 //com esse prisma eu consigo acessar o banco de dados
 
 //Fazer uma função que vai manipular o banco de dados. O CRUD cria
@@ -18,7 +19,6 @@ const prisma = new PrismaClient();     //função
 }*/
 
 
-
 //async porque mandei a funcao esperar
 export async function createUser(req, res, _next){   //eu preciso receber os dados do usuário - parâmetros do post _next (a barrinha é para ignorar)
   const data = req.body; //talvez precisa tratar
@@ -26,7 +26,6 @@ export async function createUser(req, res, _next){   //eu preciso receber os dad
   return res.status(201).json(u);
 
 }
-
 
 
 //async porque mandei a funcao esperar
@@ -63,4 +62,28 @@ export async function readUser(req, res, _next) {
   });
 
   return res.status(200).json(users);
+}
+
+
+export async function editUser(req, res, _next) 
+{
+  let id = Number(req.params.id);
+  const {name, email, birthDate} = req.body; //recuperar todos os campos
+
+  let u = await prisma.user.findFirst({ where: { id: id } });
+
+  if(!u){
+      return res.status(404).json("Não encontrei " + id);
+  }
+
+  u= attachSave(u, 'user');
+
+  if(name) u.name = name;
+  if(email) u.email = email;
+  if(birthDate) u.birthDate = birthDate;
+
+  await u.save();
+
+  return res.status(202).json(u);
+
 }
