@@ -28,14 +28,14 @@ GET http://localhost:3000/companie/1 HTTP/1.1
 content-type: application/json  
 
 ### editar
-PUT http://localhost:3000/companie/2
+PUT http://localhost:3000/companie/1 HTTP/1.1
 content-type: application/json
 
 {
-    "name": "SERVICO NACIONAL DE APRENDIZAGEM COMERCIAL SENAC",          
-    "cnpj": "03.709.814/0051-57",           
-    "foundation": "1970-05-12T03:00:00.000Z",       
-    "places": "RR EPISCOPAL 700",      
-    "fundaments": "Estudos",    
-    "methods": "Superior"         
+    "name": "CERVICO NACIONAL DE APRENDIZAGEM COMERCIAL SENAC",          
+    "cnpj": "02.709.814/0051-57",           
+    "foundation": "2970-05-12T03:00:00.000Z",       
+    "places": "RP EPISCOPAL 700",      
+    "fundaments": "Istudos",    
+    "methods": "Cuperior"         
 }

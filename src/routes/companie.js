@@ -8,6 +8,6 @@ const router = Router();
 router.post('/', createCompanie); //create e post são a mesma coisa
 router.get('/', readCompanie);
 router.get('/:id', showCompanie);
-router.get('/:id', editCompanie);
+router.put('/:id', editCompanie);
 
 export default router;
