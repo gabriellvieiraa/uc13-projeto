@@ -3,12 +3,12 @@ POST http://localhost:3000/course HTTP/1.1
 content-type: application/json
 
 {
-    "name":"Tecnico em Informatica",
-    "description" : "O curso Técnico em Informática prepara profissionais para atuar em diversas áreas da tecnologia da informação",
+    "name":"Tecnico em delete",
+    "description" : "O curso Técnico ",
     "workload": 2000,
-    "ranking": 1, 
+    "ranking": 6, 
     "fieldOfStudy":"Tecnologia",
-    "companyId":1 
+    "companyId":1
 }
 
 ### Listar todos os cursos ? -> query
@@ -70,3 +70,9 @@ content-type: application/json
   "name":"Tecnico em Batatinha"
  
 }
+
+### DELETE
+DELETE http://localhost:3000/course/3 HTTP/1.1
+content-type: application/json
+
+
