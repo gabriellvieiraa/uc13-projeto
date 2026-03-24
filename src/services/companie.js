@@ -67,8 +67,23 @@ export async function showCompanie(req, res, _next) {
     return res.status(202).json(c);
 
 
-        
+
 }
 
 
+  export async function deleteCompanie(req, res, _next) {
+
+    let id = Number(req.params.id);
+    let c = await prisma.company.findFirst({where: {id:id} });
+    
+    if(!c) {
+        
+        return res.status(404).json("Não encontrei "+id)
+    }
+    
+    await prisma.company.delete({where: {id:id}});
+    return res.status(404).json("Não encontrei "+id)
+
+    
+}
 

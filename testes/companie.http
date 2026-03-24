@@ -39,3 +39,10 @@ content-type: application/json
     "fundaments": "Istudos",    
     "methods": "Cuperior"         
 }
+
+
+### deletando um usuario
+
+DELETE http://localhost:3000/companie/2 HTTP/1.1
+content-type: application/json
+

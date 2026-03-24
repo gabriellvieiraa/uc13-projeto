@@ -9,8 +9,8 @@ const prisma = new PrismaClient();
 
 export async function createCategorie(req, res, _next){
     const data = req.body
-    let u = await prisma.category.create({data});
-    return res.status(201).json(u);
+    let c = await prisma.category.create({data});
+    return res.status(201).json(c);
 
 }
 
@@ -36,7 +36,7 @@ export async function showCategorie(req, res, _next){
 export async function editCategorie(req, res, _next){
     const {name, description, urlImg} = req.body
     let id = Number(req.params.id);
-    let c = await prisma.category.findFirst({where: {id:id} });
+    let c = await prisma.category.findFirst({where: {id:id} }); 
 
     if(!c){
         return res.status(404).json("Não encontrei "+id)
@@ -51,4 +51,19 @@ export async function editCategorie(req, res, _next){
     await c.save();
 
     return res.status(202).json(c);
+}
+
+export async function deleteCategorie(req, res, _next ){
+
+    let id = Number(req.params.id);
+    let c = await prisma.category.findFirst({where: {id:id} })
+    
+    if(!c){
+        return res.status(404).json("Não encontrei id " +id)
+    }
+    
+     let d = await prisma.category.delete({where: {id:id} })
+    
+    return res.status(202).json("Removido com sucesso " +d);
+
 }
