@@ -42,7 +42,7 @@ export async function editCategorie(req, res, _next){
         return res.status(404).json("Não encontrei "+id)
     }
 
-    c = attachSave(c, 'categorie');
+    c = attachSave(c, 'category');
 
     if (name) c.name = name;
     if (description) c.description = description;

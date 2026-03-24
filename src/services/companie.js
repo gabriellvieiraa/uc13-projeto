@@ -2,7 +2,6 @@
     import { z } from 'zod'
     import { attachSave } from "../utils/save.js";
     const prisma = new PrismaClient();
-     
     
 //req: requisição o que esta vindo do frontend
 //req: responde o que eu vou responder
@@ -46,23 +45,24 @@ export async function showCompanie(req, res, _next) {
 
 
   export async function editCompanie(req, res, _next) {
-    const {name, cnpj, foundation, places, fundaments, methods} = req.body
+    const {name, places, fundaments, methods} = req.body
     let id = Number(req.params.id);
     let c = await prisma.company.findFirst({where: {id:id} });
+    
+    if(!c) {
+        
+        return res.status(404).json("Não encontrei "+id)
+    }
+
+    c = attachSave(c, 'company');
 
     if (name) c.name = name 
     if (places) c.places = places 
     if (fundaments) c.fundaments = fundaments 
     if (methods) c.methods = methods 
 
-    if(!u){
-
-        return res.status(404).json("Não encontrei "+id)
-    }
-
-    u = attachSave(u, 'companie');
-
-    await u.save();
+   
+    await c.save();
 
     return res.status(202).json(c);
 
