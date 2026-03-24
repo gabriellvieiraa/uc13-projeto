@@ -76,10 +76,24 @@ export async function editCourse(req , res ,_next) {
 
     
     return res.status(202).json(c);
+}
+export async function deleteCourse(req , res ,_next) {
+    
+    let id = Number(req.params.id);
+    let c =await prisma.course.findFirst({where : {id:id}});
 
+    if(!c){
+        return res.status(404).json("Não encontrei " + id)
+    };
+    
 
-
-
+        
+    await prisma.course.delete({where : {id:id}});
+   
+  
+  
+    return res.status(202).json('Removido');
 
     
+
 }
