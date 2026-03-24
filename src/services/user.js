@@ -87,3 +87,21 @@ export async function editUser(req, res, _next)
   return res.status(202).json(u);
 
 }
+
+
+export async function deleteUser(req, res, _next) 
+{
+  let id = Number(req.params.id);
+ 
+  let u = await prisma.user.findFirst({ where: { id: id } });
+
+  if(!u){
+      return res.status(404).json("Não encontrei " + id);
+  }
+  else
+  {
+  await prisma.user.delete({where: {id:id}});
+  return res.status(200).json("Usuário Excluído!");
+  }
+
+}
