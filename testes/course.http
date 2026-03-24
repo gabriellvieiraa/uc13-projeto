@@ -72,7 +72,7 @@ content-type: application/json
 }
 
 ### DELETE
-DELETE http://localhost:3000/course/3 HTTP/1.1
+DELETE http://localhost:3000/course/4 HTTP/1.1
 content-type: application/json
 
 
