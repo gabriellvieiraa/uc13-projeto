@@ -3,7 +3,7 @@ POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Vanessa",
+  "name": "Vanessa Sales",
   "cpf": "12345678900",
   "email": "vanessa@email.com",
   "type": "ADMIN",
@@ -11,17 +11,99 @@ Content-Type: application/json
   "birthDate": "1995-05-10T00:00:00.000Z"
 }
 
-### criando um usuario completo
+### TESTE DE ERRO 1: Criando usuário com TIPO INEXISTENTE (TEACHER)
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Kevin",
+  "name": "Kevin Valido",
   "cpf": "12345678911",
   "email": "kevin@email.com",
   "type": "TEACHER",
   "status": "INATIVO",
   "birthDate": "2005-05-10T00:00:00.000Z"
+}
+
+### TESTE DE ERRO 2: Criando usuário com NOME SENDO NÚMERO (Inválido)
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": 12345,
+  "cpf": "12345678911",
+  "email": "kevin@email.com",
+  "type": "ADMIN",
+  "status": "ATIVO"
+}
+
+### TESTE DE ERRO 3: Criando usuário com NOME COM LETRAS INSUFICIENTES OU CARACTERES ESPECIAIS
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "A_",
+  "cpf": "12345678911",
+  "email": "kevin@email.com",
+  "type": "ADMIN",
+  "status": "ATIVO"
+}
+
+### TESTE DE ERRO 4: Criando usuário com CPF CONTENDO LETRAS E TAMANHO ERRADO
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Maria Teste",
+  "cpf": "123456789A",
+  "email": "maria@email.com",
+  "type": "ADMIN",
+  "status": "ATIVO"
+}
+
+### TESTE DE ERRO 5: Criando usuário com EMAIL INCORRETO
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Maria Teste",
+  "cpf": "12345678999",
+  "email": "maria_sem_arroba.com",
+  "type": "ADMIN",
+  "status": "ATIVO"
+}
+
+### TESTE DE ERRO 6: Criando usuário com CAMPOS DESCONHECIDOS (Ativará o STRICT do schema)
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Hackerzin",
+  "cpf": "12345678911",
+  "email": "hackerzin@email.com",
+  "type": "ADMIN",
+  "status": "ATIVO",
+  "campoImpossivel": "MudarPermissaoDireto"
+}
+
+### TESTE DE ERRO 7: Criando usuário com DATA DE NASCIMENTO NO FUTURO
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Fulano Viajante do Tempo",
+  "cpf": "12345678911",
+  "email": "futuro@email.com",
+  "birthDate": "2050-05-10T00:00:00.000Z"
+}
+
+### TESTE DE ERRO 8: Criando usuário com NOME GIGANTE (+100 Caracteres)
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Este Nome E Extremamente Longo E Passa Dos Limites Permitidos Pelo Banco De Dados Entao O Zod Deve Bloquear Porque Isso Nao Pode Acontecer De Jeito Nenhum Com Centenas De Caracteres",
+  "cpf": "12345678911",
+  "email": "longo@email.com"
 }
 
 
@@ -50,7 +132,7 @@ GET http://localhost:3000/user/2 HTTP/1.1
 content-type:aplication.json
 
 ### Listar usuários nascidos entre 1990 e 2000
-GET http://localhost:3000/user?birth_min=1990-01-01&birth_max=2000-12-31 HTTP/1.1 //coment
+GET http://localhost:3000/user?birth_min=1990-01-01&birth_max=2000-12-31 HTTP/1.1
 content-type: application/json
 
 ### Mostrar o usuário que eu quero editar
@@ -71,4 +153,6 @@ Content-Type: application/json
 GET http://localhost:3000/user/ HTTP/1.1
 content-type:aplication.json
 
-
+### Deletar o usuário
+DELETE http://localhost:3000/user/5 HTTP/1.1
+Content-Type: application/jso
