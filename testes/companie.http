@@ -3,12 +3,12 @@ POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
 
 {
-    "name": "SERVICO NACIONAL DE APRENDIZAGEM COMERCIAL SENAC",          
-    "cnpj": "03.709.814/0051-57",           
-    "foundation": "1970-05-12T03:00:00.000Z",       
-    "places": "RR EPISCOPAL 700",      
-    "fundaments": "Estudos",    
-    "methods": "Superior"         
+    "name": "ETEC CARLOS BOTELHO",          
+    "cnpj": "62.823.257/0091-57",           
+    "foundation": "2000-10-25T00:00:00.000Z",       
+    "places": "RUA CASA DO PEDRAO",      
+    "fundaments": "CASA",    
+    "methods": "ENSINO MEDIO"         
 }
 
 
@@ -32,12 +32,12 @@ PUT http://localhost:3000/companie/1 HTTP/1.1
 content-type: application/json
 
 {
-    "name": "CERVICO NACIONAL DE APRENDIZAGEM COMERCIAL SENAC",          
-    "cnpj": "02.709.814/0051-57",           
-    "foundation": "2970-05-12T03:00:00.000Z",       
-    "places": "RP EPISCOPAL 700",      
-    "fundaments": "Istudos",    
-    "methods": "Cuperior"         
+    "name": "SERVICO NACIONAL DE APRENDIZAGEM INDUSTRIAL SENAI",          
+    "cnpj": "33.564.543/0067-17",           
+    "foundation": "55673-05-12T03:00:00.000Z",       
+    "places": "RUA ANTONIO MICUCCI 350",      
+    "fundaments": "ESTUDOS",    
+    "methods": "ENSINO MEDIO"         
 }
 
 
@@ -45,4 +45,5 @@ content-type: application/json
 
 DELETE http://localhost:3000/companie/2 HTTP/1.1
 content-type: application/json
+
 
