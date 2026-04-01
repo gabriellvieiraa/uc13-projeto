@@ -3,37 +3,32 @@ POST http://localhost:3000/categorie HTTP/1.1
 content-type: application/json
 
 {
-    "name":"Medicina",          
-    "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",            
-    "description":"Curso presencial e a distância na área de gastronomia, focando em conceitos, estilos e técnicas da área."       
+    "name":"ti",          
+    "description":"de ficas"       
 }
-
 
 ### Listar todas as categorias ? -> query
 ### chave=valor
-GET http://localhost:3000/categorie?name=Medicina HTTP/1.1
+GET http://localhost:3000/categorie?name=Estética HTTP/1.1
 content-type: application/json
 
 ###
-GET  http://localhost:3000/categorie?description/ HTTP/1.1
+GET  http://localhost:3000/categorie?description HTTP/1.1
 content-type: application/json
-
 
 ### Mostrar uma única categoria /2 => /:id , id se chama params
 
-GET http://localhost:3000/categorie/2 HTTP/1.1
+GET http://localhost:3000/categorie/9 HTTP/1.1
 content-type: application/json
-
 
 ### Editar 
 
-PUT http://localhost:3000/categorie/1 HTTP/1.1
+PUT http://localhost:3000/categorie/9 HTTP/1.1
 content-type: application/json
 
 {
     "name":"Estética",          
-    "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",            
-    "description":"Curso presencial e a distância na área de estética, focando em conceitos, estilos e técnicas da área."       
+    "description":"Curso presencial e a distância na área de estética, focando em conceitos, estilos, técnicas e tendências da área."       
 }
 
 ### Delete

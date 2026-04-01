@@ -64,7 +64,6 @@ model Company {
 model Category {
   id                Int         @id @default(autoincrement())
   name              String      @unique
-  urlImg            String      @map("url_img")
   description       String
   courses           Course[]    @relation("category_course")
   users             User[]      @relation("user_category") 
