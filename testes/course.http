@@ -3,12 +3,13 @@ POST http://localhost:3000/course HTTP/1.1
 content-type: application/json
 
 {
-    "name":"Tecnico em delete",
+    "name":"Tecnico em Logistica",
     "description" : "O curso Técnico ",
     "workload": 2000,
     "ranking": 6, 
+    "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
     "fieldOfStudy":"Tecnologia",
-    "companyId":1
+    "companyId":2
 }
 
 ### Listar todos os cursos ? -> query
@@ -16,7 +17,7 @@ content-type: application/json
 
 
 ### Names
-GET http://localhost:3000/course?name=Inf HTTP/1.1
+GET http://localhost:3000/course?name=inf HTTP/1.1
 content-type: application/json
 
 ### Description
@@ -48,7 +49,7 @@ content-type: application/json
 
 ### Mostrar um unico usuário / 2 =>
 
-GET http://localhost:3000/course/ HTTP/1.1
+GET http://localhost:3000/course/5 HTTP/1.1
 content-type: application/json
 
 ### Realiza uma mudança;
@@ -72,7 +73,7 @@ content-type: application/json
 }
 
 ### DELETE
-DELETE http://localhost:3000/course/4 HTTP/1.1
+DELETE http://localhost:3000/course/5 HTTP/1.1
 content-type: application/json
 
 
