@@ -1,5 +1,5 @@
 ### criando categoria
-POST https://uc13-projeto.onrender.com/categorie HTTP/1.1
+POST https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
 content-type: application/json
 
 {
