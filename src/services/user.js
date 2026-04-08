@@ -74,7 +74,7 @@ export async function createUser(req, res, _next){
     if (error.code === 'P2002') {
       return res.status(409).json({ error: "Já existe um usuário cadastrado com este mesmo CPF ou e-mail. Por favor, insira dados diferentes." });
     }
-    return res.status(500).json({ error: "Desculpe, ocorreu um erro temporário em nosso sistema. Por favor, tente novamente mais tarde." });
+    return res.status(500).json({ error: error.message });
   }
 }
 

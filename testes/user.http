@@ -1,11 +1,11 @@
 ### criando um usuario completo
-POST http://localhost:3000/user/ HTTP/1.1
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
 Content-Type: application/json
 
 {
   "name": "Vanessa Sales",
-  "cpf": "12345678900",
-  "email": "vanessa@email.com",
+  "cpf": "45665899969",
+  "email": "ale@email.com",
   "type": "ADMIN",
   "status": "ATIVO",
   "birthDate": "1995-05-10T00:00:00.000Z"
