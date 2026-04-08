@@ -6,11 +6,14 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
+    "start": "npx prisma migrate deploy && node src/server.js",
+    "build": "prisma generate",
+    "postinstall": "prisma generate",
     "migrate": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
     "studio": "prisma studio",
     "generate": "prisma generate",
-    "seed ": "node src/seed.js"
+    "seed": "node src/seed.js"
   },
   "keywords": [],
   "author": "",
