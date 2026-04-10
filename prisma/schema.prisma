@@ -83,7 +83,7 @@ model Course{
   id             Int         @id @default(autoincrement())
   name           String      @unique
   description    String
-  urlImg         String      @map("url_img")
+  urlImg         String      @map("url_img") @default("")
   workload       Float?
   ranking        Int
   fieldOfStudy   String     @map("Field_of_study")

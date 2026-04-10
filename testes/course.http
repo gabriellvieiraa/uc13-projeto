@@ -13,7 +13,7 @@ content-type: application/json
 }
 
 ### criando um curso
-POST https://uc13-projeto-2xiu.onrender.com/course HTTP/1.1
+POST http://localhost:3000/course HTTP/1.1
 content-type: application/json
 
 {

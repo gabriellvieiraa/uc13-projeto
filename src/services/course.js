@@ -34,6 +34,7 @@ const courseEditSchema = z.object({
 export async function createCourse(req , res , _next){
     try {
         const data = courseSchema.parse(req.body);
+        console.log(data)
         let c = await prisma.course.create({ data });
         return res.status(201).json(c);
     } catch (error) {
