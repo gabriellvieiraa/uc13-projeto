@@ -8,7 +8,7 @@ content-type: application/json
 }
 
 ### criando categoria
-POST http://localhost:3000/categorie HTTP/1.1
+POST https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
 content-type: application/json
 
 {
@@ -18,21 +18,21 @@ content-type: application/json
 
 ### Listar todas as categorias ? -> query
 ### chave=valor
-GET http://localhost:3000/categorie HTTP/1.1
+GET https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
 content-type: application/json
 
 ###
-GET  http://localhost:3000/categorie?description HTTP/1.1
+GET  https://uc13-projeto-2xiu.onrender.com/categorie?description HTTP/1.1
 content-type: application/json
 
 ### Mostrar uma única categoria /2 => /:id , id se chama params
 
-GET http://localhost:3000/categorie/9 HTTP/1.1
+GET https://uc13-projeto-2xiu.onrender.com/categorie/9 HTTP/1.1
 content-type: application/json
 
 ### Editar 
 
-PUT http://localhost:3000/categorie/9 HTTP/1.1
+PUT https://uc13-projeto-2xiu.onrender.com/categorie/9 HTTP/1.1
 content-type: application/json
 
 {
@@ -42,6 +42,6 @@ content-type: application/json
 
 ### Delete
 
-DELETE http://localhost:3000/categorie/1 HTTP/1.1
+DELETE https://uc13-projeto-2xiu.onrender.com/categorie/1 HTTP/1.1
 content-type: application/json
  
