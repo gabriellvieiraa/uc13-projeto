@@ -7,6 +7,20 @@ content-type: application/json
     "description":"de ficas"       
 }
 
+### criando categoria
+POST http://localhost:3000/categorie HTTP/1.1
+content-type: application/json
+
+{
+    "name":"ti",          
+    "description":"cursos de tecnologia da informação"       
+}
+
+### Listar todas as categorias ? -> query
+### chave=valor
+GET http://localhost:3000/categorie HTTP/1.1
+content-type: application/json
+
 ### Listar todas as categorias ? -> query
 ### chave=valor
 GET http://localhost:3000/categorie?name=Estética HTTP/1.1

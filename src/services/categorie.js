@@ -11,29 +11,32 @@ const prisma = new PrismaClient();
 const categorySchema = z.object({
     name: z.string({ 
         required_error: "Nome é obrigatório",
-    }).min(3, "Nome deve ter no mínimo 3 caracteres"),
+    })?.min(2, "Nome deve ter no mínimo 2 caracteres"),
     
     description: z.string({
         invalid_type_error: "A descrição deve ser um texto"
-    }).min(3, "A descrição deve ser um texto").optional()
+    })?.min(3, "A descrição deve ser um texto")?.optional()
 });
 
 export async function createCategorie(req, res, _next){
+    console.log("DEBUG CRIAR CATEGORIA:", req.body);
     try {
         const validation = categorySchema.safeParse(req.body);
         
         // Exceção: Dados inválidos
         if (!validation.success) {
             // Entrega TODAS as mensagens (nome e descrição se houverem ambas) juntas:
-            const mensagens = validation.errors.map(err => err.message).join(" e ");
+            console.log("DEBUG VALIDATION:", validation);
+            let mensagens = "";
+            if (validation.errors)
+                mensagens = validation.errors.map(err => err.message).join(" e ");
+            else
+                mensagens = validation.error.message;
             return res.status(400).json({ error: mensagens });
         }
 
         const data = validation.data;
 
-        // O banco de dados (Prisma) OBRIGA que 'urlImg' e 'description' existam. 
-        // Como tiramos isso da requisição HTTP, preenchemos com vazio automaticamente para não dar erro:
-        data.urlImg = "";
         if (!data.description) data.description = "";
 
         // Regra: Nome não pode ser igual a um existente
@@ -46,7 +49,7 @@ export async function createCategorie(req, res, _next){
         return res.status(201).json(c);
     } catch (error) {
         console.error("DEBUG CRIAR CATEGORIA:", error);
-        return res.status(500).json({ error: "Erro interno ao criar categoria." });
+        return res.status(500).json({ error: error.message });
     }
 }
 

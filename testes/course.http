@@ -12,6 +12,20 @@ content-type: application/json
     "companyId":2
 }
 
+### criando um curso
+POST http://localhost:3000/course HTTP/1.1
+content-type: application/json
+
+{
+    "name":"Tecnico em Loistica",
+    "description" : "O curso Técnico ",
+    "workload": 2000,
+    "ranking": 6, 
+    "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
+    "fieldOfStudy":"Tecnologia",
+    "companyId":1
+}
+
 ### Listar todos os cursos ? -> query
 ### chave=valor
 

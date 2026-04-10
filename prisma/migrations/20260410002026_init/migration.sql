@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "type(teacher, admin, director)" TEXT,
+    "type" TEXT,
     "name" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -28,7 +28,6 @@ CREATE TABLE "Company" (
 CREATE TABLE "categories" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
-    "url_img" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
@@ -39,6 +38,7 @@ CREATE TABLE "courses" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "url_img" TEXT NOT NULL,
     "workload" REAL,
     "ranking" INTEGER NOT NULL,
     "Field_of_study" TEXT NOT NULL,

@@ -11,6 +11,18 @@ content-type: application/json
     "methods": "Superior"         
 }
 
+#### criando companhia 
+POST http://localhost:3000/companie HTTP/1.1
+content-type: application/json
+
+{
+    "name": "SERVICO NACIONAL DE APRENDIZAGEM COMERCIAL SENAC",          
+    "cnpj": "03.709.814/0051-57",           
+    "foundation": "1970-05-12T03:00:00.000Z",       
+    "places": "RR EPISCOPAL 700",      
+    "fundaments": "Estudos",    
+    "methods": "Superior"         
+}
 
 ### Listar todos as companhias ? -> query
 ### chave-valor
