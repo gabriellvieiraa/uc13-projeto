@@ -1,4 +1,17 @@
 #### criando companhia 
+POST https://uc13-projeto-2xiu.onrender.com/companie HTTP/1.1
+content-type: application/json
+
+{
+    "name": "SERVICO NACIONAL DE APRENDIZAGEM COMERCIAL SENAC",          
+    "cnpj": "03.709.814/0051-57",           
+    "foundation": "1970-05-12T03:00:00.000Z",       
+    "places": "RR EPISCOPAL 700",      
+    "fundaments": "Estudos",    
+    "methods": "Superior"         
+}
+
+#### criando companhia 
 POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
 
@@ -10,7 +23,6 @@ content-type: application/json
     "fundaments": "CASA",    
     "methods": "ENSINO MEDIO"         
 }
-
 
 ### Listar todos as companhias ? -> query
 ### chave-valor

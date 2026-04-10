@@ -11,7 +11,6 @@ datasource db {
 }
 
 enum UserType {
-  TEACHER
   ADMIN
   DIRECTOR
 }
@@ -65,7 +64,6 @@ model Company {
 model Category {
   id                Int         @id @default(autoincrement())
   name              String      @unique
-  urlImg            String      @map("url_img")
   description       String
   courses           Course[]    @relation("category_course")
   users             User[]      @relation("user_category") 
@@ -85,6 +83,7 @@ model Course{
   id             Int         @id @default(autoincrement())
   name           String      @unique
   description    String
+  urlImg         String      @map("url_img")
   workload       Float?
   ranking        Int
   fieldOfStudy   String     @map("Field_of_study")

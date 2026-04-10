@@ -1,7 +1,7 @@
-    import { PrismaClient } from "@prisma/client"
-    import { z } from 'zod'
-    import { attachSave } from "../utils/save.js";
-    const prisma = new PrismaClient();
+import { PrismaClient } from "@prisma/client"
+import { z } from 'zod'
+import { attachSave } from "../utils/save.js";
+const prisma = new PrismaClient();
     
 
 function isValidCNPJ(cnpj) {

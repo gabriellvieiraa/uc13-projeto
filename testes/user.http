@@ -1,22 +1,22 @@
 ### criando um usuario completo
-POST http://localhost:3000/user/ HTTP/1.1
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Vanessa",
-  "cpf": "12345678900",
-  "email": "vanessa@email.com",
+  "name": "Vanessa Sales",
+  "cpf": "45665899969",
+  "email": "ale@email.com",
   "type": "ADMIN",
   "status": "ATIVO",
   "birthDate": "1995-05-10T00:00:00.000Z"
 }
 
-### criando um usuario completo
-POST http://localhost:3000/user/ HTTP/1.1
+### TESTE DE ERRO 1: Criando usuário com TIPO INEXISTENTE (TEACHER)
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Kevin",
+  "name": "Kevin Valido",
   "cpf": "12345678911",
   "email": "kevin@email.com",
   "type": "TEACHER",
@@ -24,37 +24,119 @@ Content-Type: application/json
   "birthDate": "2005-05-10T00:00:00.000Z"
 }
 
+### TESTE DE ERRO 2: Criando usuário com NOME SENDO NÚMERO (Inválido)
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": 12345,
+  "cpf": "12345678911",
+  "email": "kevin@email.com",
+  "type": "ADMIN",
+  "status": "ATIVO"
+}
+
+### TESTE DE ERRO 3: Criando usuário com NOME COM LETRAS INSUFICIENTES OU CARACTERES ESPECIAIS
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "A_",
+  "cpf": "12345678911",
+  "email": "kevin@email.com",
+  "type": "ADMIN",
+  "status": "ATIVO"
+}
+
+### TESTE DE ERRO 4: Criando usuário com CPF CONTENDO LETRAS E TAMANHO ERRADO
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Maria Teste",
+  "cpf": "123456789A",
+  "email": "maria@email.com",
+  "type": "ADMIN",
+  "status": "ATIVO"
+}
+
+### TESTE DE ERRO 5: Criando usuário com EMAIL INCORRETO
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Maria Teste",
+  "cpf": "12345678999",
+  "email": "maria_sem_arroba.com",
+  "type": "ADMIN",
+  "status": "ATIVO"
+}
+
+### TESTE DE ERRO 6: Criando usuário com CAMPOS DESCONHECIDOS (Ativará o STRICT do schema)
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Hackerzin",
+  "cpf": "12345678911",
+  "email": "hackerzin@email.com",
+  "type": "ADMIN",
+  "status": "ATIVO",
+  "campoImpossivel": "MudarPermissaoDireto"
+}
+
+### TESTE DE ERRO 7: Criando usuário com DATA DE NASCIMENTO NO FUTURO
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Fulano Viajante do Tempo",
+  "cpf": "12345678911",
+  "email": "futuro@email.com",
+  "birthDate": "2050-05-10T00:00:00.000Z"
+}
+
+### TESTE DE ERRO 8: Criando usuário com NOME GIGANTE (+100 Caracteres)
+POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Este Nome E Extremamente Longo E Passa Dos Limites Permitidos Pelo Banco De Dados Entao O Zod Deve Bloquear Porque Isso Nao Pode Acontecer De Jeito Nenhum Com Centenas De Caracteres",
+  "cpf": "12345678911",
+  "email": "longo@email.com"
+}
+
 
 ### Listar todos os usuários
-GET http://localhost:3000/user/ HTTP/1.1
+GET https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
 content-type:aplication.json
 
 ### Filtrar pelo atributo nome
-GET http://localhost:3000/user?name=Vanessa HTTP/1.1
+GET https://uc13-projeto-2xiu.onrender.com/user?name=Vanessa HTTP/1.1
 content-type:aplication.json
 
 ### Filtrar pelo status
-GET http://localhost:3000/user?status=ATIVO HTTP/1.1
+GET https://uc13-projeto-2xiu.onrender.com/user?status=ATIVO HTTP/1.1
 content-type:aplication.json
 
 ### Filtrar pelo tipo "TEACHER"
-GET http://localhost:3000/user?type=TEACHER HTTP/1.1  
+GET https://uc13-projeto-2xiu.onrender.com/user?type=TEACHER HTTP/1.1  
 content-type:aplication.json
 
 ### Filtrar pelo tipo "ADMIN"
-GET http://localhost:3000/user?type=ADMIN HTTP/1.1
+GET https://uc13-projeto-2xiu.onrender.com/user?type=ADMIN HTTP/1.1
 content-type:aplication.json
 
 ### Mostrar um único usuário
-GET http://localhost:3000/user/2 HTTP/1.1 
+GET https://uc13-projeto-2xiu.onrender.com/user/2 HTTP/1.1 
 content-type:aplication.json
 
 ### Listar usuários nascidos entre 1990 e 2000
-GET http://localhost:3000/user?birth_min=1990-01-01&birth_max=2000-12-31 HTTP/1.1 //coment
+GET https://uc13-projeto-2xiu.onrender.com/user?birth_min=1990-01-01&birth_max=2000-12-31 HTTP/1.1
 content-type: application/json
 
 ### Mostrar o usuário que eu quero editar
-PUT http://localhost:3000/user/2 HTTP/1.1
+PUT https://uc13-projeto-2xiu.onrender.com/user/2 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -62,3 +144,15 @@ Content-Type: application/json
   "email": "lucas@email.com",
   "birthDate": "2006-05-10T00:00:00.000Z"
 }
+
+### Deletar o usuário
+DELETE https://uc13-projeto-2xiu.onrender.com/user/1 HTTP/1.1
+Content-Type: application/json
+
+### Listar todos os usuários
+GET https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+content-type:aplication.json
+
+### Deletar o usuário
+DELETE https://uc13-projeto-2xiu.onrender.com/user/5 HTTP/1.1
+Content-Type: application/json
