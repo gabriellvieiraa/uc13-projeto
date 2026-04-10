@@ -14,6 +14,7 @@ const prisma = new PrismaClient();
 const courseSchema = z.object({
     name: z.string().min(3, "O nome deve ter pelo menos 3 caracteres").max(100, "O nome pode ter no máximo 100 caracteres"),
     description: z.string().min(10, "A descrição deve ter pelo menos 10 caracteres"),
+    urlImg: z.string().url("A URL da imagem fornecida não é um formato válido"),
     workload: z.number().positive("A carga horária deve ser positiva").optional(),
     ranking: z.number().int().min(1),
     fieldOfStudy: z.string().min(2, "A área de estudo deve ter pelo menos 2 caracteres"),
@@ -23,6 +24,7 @@ const courseSchema = z.object({
 const courseEditSchema = z.object({
     name: z.string().min(3).max(100).optional(),
     description: z.string().min(10).optional(),
+    urlImg: z.string().url("A URL da imagem fornecida não é um formato válido").optional(),
     workload: z.number().positive().optional(),
     ranking: z.number().int().min(1).optional(),
     fieldOfStudy: z.string().min(2).optional(),
