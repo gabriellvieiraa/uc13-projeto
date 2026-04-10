@@ -1,5 +1,5 @@
 #### criando companhia 
-POST http://localhost:3000/companie HTTP/1.1
+POST https://uc13-projeto-2xiu.onrender.com/companie HTTP/1.1
 content-type: application/json
 
 {
