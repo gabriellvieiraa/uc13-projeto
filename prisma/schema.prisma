@@ -82,7 +82,7 @@ model Category {
 
 model Course{
   id             Int         @id @default(autoincrement())
-  name           String      @unique
+  name           String      
   description    String
   urlImg         String      @map("url_img") @default("")
   workload       Float?
