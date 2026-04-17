@@ -28,6 +28,7 @@ model User {
   email             String          @unique
   status            UserStatus?
   birthDate         DateTime?       @map("birth_date")
+  password          String          @default("123")
 
 
 

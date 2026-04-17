@@ -1,5 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { z } from 'zod';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+
 const prisma = new PrismaClient();     //função
 import {attachSave} from "../utils/save.js";
 //com esse prisma eu consigo acessar o banco de dados
@@ -51,7 +54,12 @@ const createUserSchema = z.object({
   
   birthDate: z.coerce.date({ 
     errorMap: () => ({ message: "A data de nascimento informada não está num longo formato ou é inválida (exemplo aceito: 2005-05-10T00:00:00.000Z)." })
-  }).max(new Date(), { message: "A data de nascimento não pode estar no futuro." }).optional()
+  }).max(new Date(), { message: "A data de nascimento não pode estar no futuro." }).optional(),
+  
+  password: z.string({ 
+    required_error: "A senha é obrigatória para o cadastro.",
+    invalid_type_error: "A senha deve ser um texto."
+  }).min(6, { message: "A senha deve ter no mínimo 6 caracteres." })
 }).strict({ message: "Foram enviados dados não reconhecidos nesta requisição. Por favor, envie apenas as informações solicitadas no cadastro." });
 
 //async porque mandei a funcao esperar
@@ -67,6 +75,11 @@ export async function createUser(req, res, _next){
     }
 
     const data = parsed.data;
+    
+    // Criptografar a senha antes de salvar
+    const salt = await bcrypt.genSalt(10);
+    data.password = await bcrypt.hash(data.password, salt);
+
     let u = await prisma.user.create({data});
     return res.status(201).json(u);
   } catch (error) {
@@ -228,5 +241,63 @@ export async function deleteUser(req, res, _next)
     return res.status(200).json({ message: "A operação de remoção desse registro de perfil foi realizada." });
   } catch (error) {
     return res.status(500).json({ error: "Infelizmente esse registro de conta não pôde ser efetuado no momento. Nosso serviço pode estar sofrendo instabilidade." });
+  }
+}
+
+const loginSchema = z.object({
+  email: z.string().email({ message: "E-mail inválido." }),
+  password: z.string().min(1, { message: "A senha é obrigatória." })
+});
+
+export async function loginUser(req, res, _next) {
+  try {
+    const parsed = loginSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.issues[0].message });
+    }
+
+    const { email, password } = parsed.data;
+
+    // Busca o usuário pelo e-mail
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      return res.status(401).json({ error: "E-mail ou senha incorretos." });
+    }
+
+    // Compara a senha
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "E-mail ou senha incorretos." });
+    }
+
+    // Gera o token JWT
+    const secret = process.env.JWT_SECRET || 'secret';
+    const token = jwt.sign(
+      { 
+        sub: user.id, 
+        type: user.type, 
+        email: user.email, 
+        name: user.name 
+      }, 
+      secret, 
+      { expiresIn: '1d' }
+    );
+
+    // Retorna o token e dados básicos do usuário
+    return res.status(200).json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        type: user.type
+      }
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Erro interno ao processar login." });
   }
 }
