@@ -1,10 +1,11 @@
 ### Login de usuário
+
 POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "ale@email.com",
-  "password": "senha_segura_123"
+  "email": "leon@test.com",
+  "password": "senhasegura"
 }
 
 ### criando um usuario completo com SENHA
@@ -12,10 +13,10 @@ POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Vanessa Sales",
-  "cpf": "45665899969",
-  "email": "ale@email.com",
-  "password": "senha_segura_123",
+  "name": "LEONARDO NQUARESMA",
+  "cpf": "12345672200",
+  "email": "leon@test.com",
+  "password": "senhasegura",
   "type": "ADMIN",
   "status": "ATIVO",
   "birthDate": "1995-05-10T00:00:00.000Z"

@@ -1,5 +1,9 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInR5cGUiOiJBRE1JTiIsImVtYWlsIjoibGVvbkB0ZXN0LmNvbSIsIm5hbWUiOiJMRU9OQVJETyBOUVVBUkVTTUEiLCJpYXQiOjE3NzY0NjcwMDQsImV4cCI6MTc3NjU1MzQwNH0.WSViQ6_iXOHjPUtVEQ3iTXMDoINoJtjf3HydWiA87B0
+
+
 ### criando um curso
 POST https://uc13-projeto-2xiu.onrender.com/course HTTP/1.1
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {
@@ -14,15 +18,16 @@ content-type: application/json
 
 ### criando um curso
 POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {
-    "name":"Tecnico em Loistica",
-    "description" : "O curso Técnico ",
+    "name":"Tecnico em ADM",
+    "description" : "O curso Técnico em ADM ",
     "workload": 2000,
     "ranking": 6, 
     "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
-    "fieldOfStudy":"Tecnologia",
+    "fieldOfStudy":"Administração",
     "companyId":1
 }
 
@@ -45,6 +50,10 @@ content-type: application/json
 
 ###
 GET https://uc13-projeto-2xiu.onrender.com/course?workload_min=100  HTTP/1.1
+content-type: application/json
+### listar todos o curso
+
+GET http://localhost:3000/course HTTP/1.1
 content-type: application/json
 
 
@@ -74,6 +83,15 @@ content-type : application/json
 {
   "name":"Tecnico em Enfermagem",
   "description" : "O curso Técnico em Informática prepara profissionais para atuar em diversas áreas da tecnologia da informação"
+}
+### Editando o curso;
+
+PUT http://localhost:3000/course/9 HTTP/1.1
+content-type : application/json
+
+{
+  "name":"Tecnico em Administração",
+  "description" : "O curso Técnico em Administração prepara profissionais para atuar em diversas áreas da administração"
 }
 
 ###
