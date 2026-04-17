@@ -3,8 +3,8 @@ POST https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
 content-type: application/json
 
 {
-    "name":"ti",          
-    "description":"de ficas"       
+    "name":"fisioterapia",          
+    "description":"fisioterapia e reabilitação"       
 }
 
 ### criando categoria
