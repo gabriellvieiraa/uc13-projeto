@@ -1,4 +1,17 @@
-#### criando companhia 
+### [LOCAL] Criando companhia completa (Sucesso)
+POST http://localhost:3000/companie HTTP/1.1
+content-type: application/json
+
+{
+    "name": "carlos renato",          
+    "cnpj": "76.487.032/0001-25",           
+    "foundation": "2010-08-18T03:00:00.000Z",       
+    "places": "RUA CARLOS DRUMMON 123",      
+    "fundaments": "Estudos Privados",    
+    "methods": "Ensino Medio"         
+}
+
+### [PRODUCAO] Criando companhia completa (Sucesso)
 POST https://uc13-projeto-2xiu.onrender.com/companie HTTP/1.1
 content-type: application/json
 
@@ -7,16 +20,16 @@ content-type: application/json
     "cnpj": "03.709.814/0051-57",           
     "foundation": "1970-05-12T03:00:00.000Z",       
     "places": "RR EPISCOPAL 700",      
-    "fundaments": "Estudos",    
-    "methods": "Superior"         
+    "fundaments": "Estudos Comerciais",    
+    "methods": "Ensino Superior"         
 }
 
-#### criando companhia 
-POST https://uc13-projeto-2xiu.onrender.com/companie HTTP/1.1
+### TESTE DE ERRO 1: Criando companhia com NOME VAZIO
+POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
 
 {
-    "name": "ETEC CARLOS BOTELHO",          
+    "name": "",          
     "cnpj": "62.823.257/0091-57",           
     "foundation": "2000-10-25T00:00:00.000Z",       
     "places": "RUA CASA DO PEDRAO",      
@@ -24,38 +37,79 @@ content-type: application/json
     "methods": "ENSINO MEDIO"         
 }
 
-### Listar todos as companhias ? -> query
-### chave-valor
-
-GET https://uc13-projeto-2xiu.onrender.com/companie?name=SERVICO NACIONAL DE APRENDIZAGEM COMERCIAL SENAC HTTP/1.1
+### TESTE DE ERRO 2: Criando companhia com CNPJ INVÁLIDO
+POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
 
-### Mostrar uma unica companhia /2 => /:id , id se chama params
+{
+    "name": "ETEC CARLOS BOTELHO",          
+    "cnpj": "00.000.000/0000-00",           
+    "foundation": "2000-10-25T00:00:00.000Z",       
+    "places": "RUA CASA DO PEDRAO",      
+    "fundaments": "CASA",    
+    "methods": "ENSINO MEDIO"         
+}
 
-GET https://uc13-projeto-2xiu.onrender.com/companie?cnpj/ HTTP/1.1
+### TESTE DE ERRO 3: Criando companhia com DATA DE FUNDAÇÃO NO FUTURO
+POST http://localhost:3000/companie HTTP/1.1
+content-type: application/json
+
+{
+    "name": "EMPRESA DO FUTURO",          
+    "cnpj": "62.823.257/0091-57",           
+    "foundation": "2050-10-25T00:00:00.000Z",       
+    "places": "RUA 1",      
+    "fundaments": "CASA",    
+    "methods": "ENSINO MEDIO"         
+}
+
+### TESTE DE ERRO 4: Criando companhia FALTANDO OBRIGATÓRIOS (Sem métodos)
+POST http://localhost:3000/companie HTTP/1.1
+content-type: application/json
+
+{
+    "name": "EMPRESA SEM METODO",          
+    "cnpj": "62.823.257/0091-57",           
+    "foundation": "2000-10-25T00:00:00.000Z",       
+    "places": "RUA 1",      
+    "fundaments": "CASA"
+}
+
+### [LOCAL] Listar todas as companhias
+GET http://localhost:3000/companie HTTP/1.1
+content-type: application/json
+
+### [PRODUCAO] Listar todas as companhias
+GET https://uc13-projeto-2xiu.onrender.com/companie HTTP/1.1
+content-type: application/json
+
+### Filtrar pelo atributo nome
+GET http://localhost:3000/companie?name=SENAC HTTP/1.1
+content-type: application/json
+
+### Filtrar pelo CNPJ
+GET http://localhost:3000/companie?cnpj=03709814005157 HTTP/1.1
+content-type: application/json
+
+### Filtrar por lugares (places)
+GET http://localhost:3000/companie?places=EPISCOPAL HTTP/1.1
+content-type: application/json
+
+### Mostrar uma única companhia (por ID)
+GET http://localhost:3000/companie/1 HTTP/1.1
 content-type: application/json  
 
-###
-GET https://uc13-projeto-2xiu.onrender.com/companie/1 HTTP/1.1
-content-type: application/json  
-
-### editar
-PUT https://uc13-projeto-2xiu.onrender.com/companie/1 HTTP/1.1
+### Editar a companhia (ID de exemplo)
+PUT http://localhost:3000/companie/1 HTTP/1.1
 content-type: application/json
 
 {
     "name": "SERVICO NACIONAL DE APRENDIZAGEM INDUSTRIAL SENAI",          
-    "cnpj": "33.564.543/0067-17",           
-    "foundation": "55673-05-12T03:00:00.000Z",       
     "places": "RUA ANTONIO MICUCCI 350",      
-    "fundaments": "ESTUDOS",    
-    "methods": "ENSINO MEDIO"         
+    "fundaments": "ESTUDOS INDUSTRIAIS",    
+    "methods": "ENSINO MEDIO E TECNICO"         
 }
 
-
-### deletando um usuario
-
-DELETE https://uc13-projeto-2xiu.onrender.com/companie/2 HTTP/1.1
+### Deletar a companhia
+DELETE http://localhost:3000/companie/2 HTTP/1.1
 content-type: application/json
-
-
