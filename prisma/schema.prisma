@@ -32,10 +32,11 @@ model User {
 
 
 
-  companies         Company[]       @relation("user_company") 
+  companyId         Int?            @map("company_id")
+  company           Company?        @relation(fields: [companyId], references: [id])
+  
   categories        Category[]      @relation("user_category") 
-
-
+  coursesOwned      Course[]        @relation("course_owner")
 
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
@@ -53,7 +54,7 @@ model Company {
   fundaments    String
   methods       String
 
-  users         User[]        @relation("user_company")
+  users         User[]       
   courses       Course[]    
 
 
@@ -91,7 +92,10 @@ model Course{
    
   categories     Category[]  @relation("category_course")
   companyId       Int        @map("company_id")
-  company         Company    @relation(fields: [companyId], references: [id])
+  company       Company    @relation(fields: [companyId], references: [id])
+
+  ownerId       Int        @map("owner_id")
+  owner         User       @relation("course_owner", fields: [ownerId], references: [id])
 
   
   @@map("courses")

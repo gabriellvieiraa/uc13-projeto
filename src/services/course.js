@@ -33,9 +33,29 @@ const courseEditSchema = z.object({
 
 export async function createCourse(req , res , _next){
     try {
+        const user = req.logeded;
+        if (!user) return res.status(401).json({ error: "Você precisa estar logado para realizar esta operação." });
+
         const data = courseSchema.parse(req.body);
+
+        // Authorization Logic
+        if (user.type === 'DIRECTOR') {
+            // Fetch user to check companyId
+            const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+            if (!dbUser || dbUser.companyId !== data.companyId) {
+                return res.status(403).json({ error: "Você só pode criar cursos para a empresa na qual está cadastrado." });
+            }
+        } else if (user.type !== 'ADMIN') {
+            return res.status(403).json({ error: "Apenas administradores ou diretores podem criar cursos." });
+        }
+
         console.log(data)
-        let c = await prisma.course.create({ data });
+        let c = await prisma.course.create({ 
+            data: { 
+                ...data,
+                ownerId: user.id 
+            } 
+        });
         return res.status(201).json(c);
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -104,6 +124,9 @@ export async function showCourse(req, res ,_next) {
 
 export async function editCourse(req , res ,_next) {
     try {
+        const user = req.logeded;
+        if (!user) return res.status(401).json({ error: "Você precisa estar logado para realizar esta operação." });
+
         let id = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "ID inválido fornecido" });
 
@@ -114,6 +137,16 @@ export async function editCourse(req , res ,_next) {
         if(!c){
             return res.status(404).json({ error: "Não encontrei curso com o ID: " + id })
         };
+
+        // Authorization Logic
+        if (user.type === 'DIRECTOR') {
+            const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+            if (!dbUser || dbUser.companyId !== c.companyId || c.ownerId !== user.id) {
+                return res.status(403).json({ error: "Você só pode editar cursos que você mesmo criou e pertencentes à sua empresa." });
+            }
+        } else if (user.type !== 'ADMIN') {
+            return res.status(403).json({ error: "Apenas administradores ou o diretor que criou o curso podem editá-lo." });
+        }
 
         c = attachSave(c,'course')
 
@@ -148,6 +181,9 @@ export async function editCourse(req , res ,_next) {
 }
 export async function deleteCourse(req , res ,_next) {
     try {
+        const user = req.logeded;
+        if (!user) return res.status(401).json({ error: "Você precisa estar logado para realizar esta operação." });
+
         let id = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "ID inválido fornecido" });
 
@@ -156,6 +192,16 @@ export async function deleteCourse(req , res ,_next) {
         if(!c){
             return res.status(404).json({ error: "Não encontrei o curso com o ID: " + id })
         };
+
+        // Authorization Logic
+        if (user.type === 'DIRECTOR') {
+            const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
+            if (!dbUser || dbUser.companyId !== c.companyId || c.ownerId !== user.id) {
+                return res.status(403).json({ error: "Você só pode deletar cursos que você mesmo criou e pertencentes à sua empresa." });
+            }
+        } else if (user.type !== 'ADMIN') {
+            return res.status(403).json({ error: "Apenas administradores ou o diretor que criou o curso podem deletá-lo." });
+        }
 
         await prisma.course.delete({where : {id:id}});
    
