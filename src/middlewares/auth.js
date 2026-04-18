@@ -26,7 +26,7 @@ const authMiddleware = (req, res, next) => {
   // A chave secreta deve estar no seu arquivo .env (ex: JWT_SECRET=sua_chave_aqui)
   
   try{
-  const secret = process.env.JWT_SECRET; 
+  const secret = process.env.JWT_SECRET || 'secret'; 
 
   const payload = jwt.verify(token, secret) 
     // Se o token for válido, salva as informações decodificadas do usuário (como o ID) no req
