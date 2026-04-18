@@ -1,24 +1,16 @@
 ### criando categoria
-POST https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
+POST http://localhost:3000/categorie HTTP/1.1
 content-type: application/json
 
 {
-    "name":"fisioterapia",          
-    "description":"fisioterapia e reabilitação"       
+    "name":"teste2",          
+    "description":"Curso de matemática com lógicas e equaçõesss"       
 }
 
-### criando categoria
-POST https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
-content-type: application/json
-
-{
-    "name":"ti",          
-    "description":"cursos de tecnologia da informação"       
-}
 
 ### Listar todas as categorias ? -> query
 ### chave=valor
-GET https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
+GET http://localhost:3000/categorie HTTP/1.1
 content-type: application/json
 
 ###
@@ -30,7 +22,7 @@ content-type: application/json
 GET https://uc13-projeto-2xiu.onrender.com/categorie/9 HTTP/1.1
 content-type: application/json
 
-### Editar 
+### Editar uma categoria
 
 PUT https://uc13-projeto-2xiu.onrender.com/categorie/9 HTTP/1.1
 content-type: application/json
