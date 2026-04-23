@@ -96,8 +96,8 @@ export async function showCategorie(req, res, _next){
 }
 
 export async function editCategorie(req, res, _next){
-    if (req.logeded.type !== 'ADMIN' && req.logeded.type !== 'DIRECTOR') {
-        return res.status(403).json({ error: "Acesso Negado: Apenas Administradores e Diretores têm permissão para alterar Categorias." });
+    if (req.logeded.type !== 'ADMIN') {
+        return res.status(403).json({ error: "Acesso Negado: Apenas Administradores têm permissão para editar Categorias." });
     }
 
     try {
@@ -146,8 +146,8 @@ export async function editCategorie(req, res, _next){
 }
 
 export async function deleteCategorie(req, res, _next ){
-    if (req.logeded.type !== 'ADMIN' && req.logeded.type !== 'DIRECTOR') {
-        return res.status(403).json({ error: "Acesso Negado: Apenas Administradores e Diretores têm permissão para alterar Categorias." });
+    if (req.logeded.type !== 'ADMIN') {
+        return res.status(403).json({ error: "Acesso Negado: Apenas Administradores têm permissão para deletar Categorias." });
     }
 
     try {
