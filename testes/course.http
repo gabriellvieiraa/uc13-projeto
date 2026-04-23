@@ -32,23 +32,21 @@ content-type: application/json
 }
 
 ### Listar todos os cursos ? -> query
-### chave=valor
+# chave=valor
 
-
-### Names
+# Names
 GET https://uc13-projeto-2xiu.onrender.com/course?name=inf HTTP/1.1
 content-type: application/json
 
-### Description
+# Description
 GET https://uc13-projeto-2xiu.onrender.com/course?description=Inf HTTP/1.1
 
 
-### Workload
-
+# Workload
 GET https://uc13-projeto-2xiu.onrender.com/course?workload_max=2000  HTTP/1.1
 content-type: application/json
 
-###
+#
 GET https://uc13-projeto-2xiu.onrender.com/course?workload_min=100  HTTP/1.1
 content-type: application/json
 ### listar todos o curso
@@ -58,15 +56,15 @@ content-type: application/json
 
 
 
-### Rankings
+# Rankings
 GET https://uc13-projeto-2xiu.onrender.com/course?ranking HTTP/1.1
 content-type: application/json
 
-###
+#
 GET https://uc13-projeto-2xiu.onrender.com/course?ranking_max=5 HTTP/1.1
 content-type: application/json
 
-###
+#
 GET https://uc13-projeto-2xiu.onrender.com/course?ranking_min=1 HTTP/1.1
 content-type: application/json
 
@@ -94,7 +92,7 @@ content-type : application/json
   "description" : "O curso Técnico em Administração prepara profissionais para atuar em diversas áreas da administração"
 }
 
-###
+#
 PUT https://uc13-projeto-2xiu.onrender.com/course/1 HTTP/1.1
 content-type: application/json
 
