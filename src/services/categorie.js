@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { z } from 'zod';
-import { attachSave } from "../utils/save.js"; 
+import { attachSave } from "../utils/save.js";
 const prisma = new PrismaClient();
 
 //req: requisição o que esta vindo do frontend
@@ -9,16 +9,16 @@ const prisma = new PrismaClient();
 
 // Schema Simples
 const categorySchema = z.object({
-    name: z.string({ 
+    name: z.string({
         required_error: "Nome é obrigatório",
     })?.min(2, "Nome deve ter no mínimo 2 caracteres"),
-    
+
     description: z.string({
         invalid_type_error: "A descrição deve ser um texto"
     })?.min(3, "A descrição deve ser um texto")?.optional()
 });
 
-export async function createCategorie(req, res, _next){
+export async function createCategorie(req, res, _next) {
     if (req.logeded.type !== 'ADMIN' && req.logeded.type !== 'DIRECTOR') {
         return res.status(403).json({ error: "Acesso Negado: Apenas Administradores e Diretores têm permissão para alterar Categorias." });
     }
@@ -26,7 +26,7 @@ export async function createCategorie(req, res, _next){
     console.log("DEBUG CRIAR CATEGORIA:", req.body);
     try {
         const validation = categorySchema.safeParse(req.body);
-        
+
         // Exceção: Dados inválidos
         if (!validation.success) {
             // Entrega TODAS as mensagens (nome e descrição se houverem ambas) juntas:
@@ -57,52 +57,52 @@ export async function createCategorie(req, res, _next){
     }
 }
 
-export async function readCategorie(req, res, _next){
+export async function readCategorie(req, res, _next) {
     try {
-        const {name, description} = req.query;
+        const { name, description } = req.query;
 
         let consult = {};
 
-        if (name) consult.name = {contains: name};
-        if (description) consult.description = {contains: description};
+        if (name) consult.name = { contains: name };
+        if (description) consult.description = { contains: description };
 
-        let categories = await prisma.category.findMany({where: consult});
+        let categories = await prisma.category.findMany({ where: consult });
         return res.status(200).json(categories);
     } catch (error) {
         return res.status(500).json({ error: "Erro interno ao buscar categorias." });
     }
 }
 
-export async function showCategorie(req, res, _next){
+export async function showCategorie(req, res, _next) {
     try {
         let id = Number(req.params.id);
-        
+
         // Exceção: ID inválido
         if (isNaN(id)) {
             return res.status(400).json({ error: "O ID informado não é válido." });
         }
 
-        let c = await prisma.category.findFirst({where: {id:id} });
-        
+        let c = await prisma.category.findFirst({ where: { id: id } });
+
         // Exceção: Não encontrado
         if (!c) {
             return res.status(404).json({ error: "Nenhuma categoria encontrada com este ID." });
         }
-        
+
         return res.status(200).json(c);
     } catch (error) {
         return res.status(500).json({ error: "Erro interno ao exibir categoria." });
     }
 }
 
-export async function editCategorie(req, res, _next){
+export async function editCategorie(req, res, _next) {
     if (req.logeded.type !== 'ADMIN') {
         return res.status(403).json({ error: "Acesso Negado: Apenas Administradores têm permissão para editar Categorias." });
     }
 
     try {
         let id = Number(req.params.id);
-        
+
         if (isNaN(id)) {
             return res.status(400).json({ error: "O ID informado não é válido." });
         }
@@ -117,9 +117,9 @@ export async function editCategorie(req, res, _next){
         const data = validation.data;
         if (!data.description) data.description = "";
 
-        let c = await prisma.category.findFirst({where: {id:id} }); 
+        let c = await prisma.category.findFirst({ where: { id: id } });
 
-        if(!c){
+        if (!c) {
             return res.status(404).json({ error: "Nenhuma categoria encontrada com este ID." });
         }
 
@@ -145,26 +145,26 @@ export async function editCategorie(req, res, _next){
     }
 }
 
-export async function deleteCategorie(req, res, _next ){
+export async function deleteCategorie(req, res, _next) {
     if (req.logeded.type !== 'ADMIN') {
         return res.status(403).json({ error: "Acesso Negado: Apenas Administradores têm permissão para deletar Categorias." });
     }
 
     try {
         let id = Number(req.params.id);
-        
+
         if (isNaN(id)) {
             return res.status(400).json({ error: "O ID informado não é válido." });
         }
 
-        let c = await prisma.category.findFirst({where: {id:id} })
-        
-        if(!c){
+        let c = await prisma.category.findFirst({ where: { id: id } })
+
+        if (!c) {
             return res.status(404).json({ error: "Nenhuma categoria encontrada com este ID." });
         }
-        
-        let d = await prisma.category.delete({where: {id:id} })
-        
+
+        let d = await prisma.category.delete({ where: { id: id } })
+
         return res.status(202).json({ message: "Removido com sucesso", category: d });
     } catch (error) {
         return res.status(500).json({ error: "Erro interno ao deletar categoria." });
