@@ -59,7 +59,9 @@ const createUserSchema = z.object({
   password: z.string({ 
     required_error: "A senha é obrigatória para o cadastro.",
     invalid_type_error: "A senha deve ser um texto."
-  }).min(6, { message: "A senha deve ter no mínimo 6 caracteres." })
+  }).min(6, { message: "A senha deve ter no mínimo 6 caracteres." }),
+  
+  companyId: z.number().int().positive().optional()
 }).strict({ message: "Foram enviados dados não reconhecidos nesta requisição. Por favor, envie apenas as informações solicitadas no cadastro." });
 
 //async porque mandei a funcao esperar
@@ -177,7 +179,9 @@ const editUserSchema = z.object({
   
   birthDate: z.coerce.date({ 
     errorMap: () => ({ message: "Padrão de edição para data não suportado. Verifique os dados e envie por exemplo 2005-05-10T00:00:00.000Z." })
-  }).max(new Date(), { message: "A data de nascimento não pode estar no futuro." }).optional()
+  }).max(new Date(), { message: "A data de nascimento não pode estar no futuro." }).optional(),
+
+  companyId: z.number().int().positive().optional()
 }).strict({ message: "Há um ou mais parâmetros sendo enviados que não deveriam estar ai ou não são válidos para alteração (por exemplo: você não pode alterar o CPF desta conta)." });
 
 export async function editUser(req, res, _next) 
@@ -210,6 +214,7 @@ export async function editUser(req, res, _next)
     if(data.birthDate !== undefined) u.birthDate = data.birthDate;
     if(data.type !== undefined) u.type = data.type;
     if(data.status !== undefined) u.status = data.status;
+    if(data.companyId !== undefined) u.companyId = data.companyId;
 
     await u.save();
 
