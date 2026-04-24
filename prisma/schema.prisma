@@ -38,6 +38,8 @@ model User {
   categories        Category[]      @relation("user_category") 
   coursesOwned      Course[]        @relation("course_owner")
 
+  companiesOwned    Company[]       @relation("company_owner")
+
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
 
@@ -56,6 +58,9 @@ model Company {
 
   users         User[]       
   courses       Course[]    
+
+  ownerId       Int?          @map("owner_id")
+  owner         User?         @relation("company_owner", fields: [ownerId], references: [id])
 
 
   createdAt     DateTime      @default(now())
@@ -94,8 +99,8 @@ model Course{
   companyId       Int        @map("company_id")
   company       Company    @relation(fields: [companyId], references: [id])
 
-  ownerId       Int        @map("owner_id")
-  owner         User       @relation("course_owner", fields: [ownerId], references: [id])
+  ownerId       Int?       @map("owner_id")
+  owner         User?      @relation("course_owner", fields: [ownerId], references: [id])
 
   
   @@map("courses")

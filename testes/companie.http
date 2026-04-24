@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInR5cGUiOiJBRE1JTiIsImVtYWlsIjoibGVvbkB0ZXN0LmNvbSIsIm5hbWUiOiJMRU9OQVJETyBOUVVBUkVTTUEiLCJpYXQiOjE3NzY0NzM1NDcsImV4cCI6MTc3NjU1OTk0N30.s0HodwAp93RAcRP5BxhJpbqB7X0au0SPv0VSCWQBGqE
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInR5cGUiOiJESVJFQ1RPUiIsImVtYWlsIjoiZ2FicmllbEB0ZXN0LmNvbSIsIm5hbWUiOiJHQUJSSUVMIE5RVUFSRVNNQSIsImlhdCI6MTc3NjQ3NDY1OCwiZXhwIjoxNzc2NTYxMDU4fQ.LZCuB3Tbnhw7NqI9rm41nhwPgex6phdIpPU6CSe2JSc
 
 
 ### [ATENÇÃO] 1. FAÇA O LOGIN PRIMEIRO PARA PEGAR O SEU TOKEN
@@ -7,7 +7,7 @@ POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "leon@test.com",
+  "email": "gabriel@test.com",
   "password": "senhasegura"
 }
 
@@ -122,15 +122,15 @@ GET http://localhost:3000/companie/1 HTTP/1.1
 content-type: application/json  
 
 ### Editar a companhia (ID de exemplo - Requer Token)
-PUT http://localhost:3000/companie/1 HTTP/1.1
+PUT http://localhost:3000/companie/6 HTTP/1.1
 content-type: application/json
-Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
+Authorization: Bearer {{token}}
 
 {
-    "name": "SERVICO NACIONAL DE APRENDIZAGEM INDUSTRIAL SENAI",          
+    "name": "TUCANO NACIONAL DE APRENDIZAGEM INDUSTRIAL SENAI",          
     "places": "RUA ANTONIO MICUCCI 350",      
-    "fundaments": "ESTUDOS INDUSTRIAIS",    
-    "methods": "ENSINO MEDIO E TECNICO"         
+    "fundaments": "Carlos alberto INDUSTRIAIS",    
+    "methods": "Taqueray MEDIO E TECNICO"         
 }
 
 ### Deletar a companhia (Requer Token)
