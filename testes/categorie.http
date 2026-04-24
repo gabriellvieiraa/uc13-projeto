@@ -1,7 +1,7 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInR5cGUiOiJBRE1JTiIsImVtYWlsIjoiZ2FicmllbEB0ZXN0LmNvbSIsIm5hbWUiOiJHQUJSSUVMIE5RVUFSRVNNQSIsImlhdCI6MTc3NjQ3NDY1OCwiZXhwIjoxNzc2NTYxMDU4fQ.LZCuB3Tbnhw7NqI9rm41nhwPgex6phdIpPU6CSe2JSc
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInR5cGUiOiJBRE1JTiIsImVtYWlsIjoibGVvbkB0ZXN0LmNvbSIsIm5hbWUiOiJMRU9OQVJETyBOUVVBUkVTTUEiLCJpYXQiOjE3NzcwNjk0MjcsImV4cCI6MTc3NzE1NTgyN30.dcncZph4NRMjRvt2oVEXSrOX8sA6ojt8yxQ7ErkStGs
 
 ### criando categoria
-POST https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
+POST http://localhost:3000/categorie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}
 
