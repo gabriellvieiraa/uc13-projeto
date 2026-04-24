@@ -117,6 +117,11 @@ export async function showUser(req, res, _next){
 //async porque mandei a funcao esperar
 export async function readUser(req, res, _next) {
   try {
+    const user = req.logeded;
+    if (!user || user.type !== 'ADMIN') {
+      return res.status(403).json({ error: "Acesso Negado: Apenas Administradores podem listar e filtrar usuários do sistema." });
+    }
+
     const { name, status, type, birth_min, birth_max } = req.query;
     const consult = {}; // Objeto para montar a consulta
 
@@ -181,12 +186,22 @@ const editUserSchema = z.object({
     errorMap: () => ({ message: "Padrão de edição para data não suportado. Verifique os dados e envie por exemplo 2005-05-10T00:00:00.000Z." })
   }).max(new Date(), { message: "A data de nascimento não pode estar no futuro." }).optional(),
 
-  companyId: z.number().int().positive().optional()
-}).strict({ message: "Há um ou mais parâmetros sendo enviados que não deveriam estar ai ou não são válidos para alteração (por exemplo: você não pode alterar o CPF desta conta)." });
+  companyId: z.number().int().positive().optional(),
+
+  cpf: z.string({ invalid_type_error: "O formato do CPF é inválido." })
+  .length(11, { message: "O CPF deve conter exatamente 11 dígitos numéricos." })
+  .regex(/^\d+$/, { message: "O CPF deve conter apenas números, sem pontos ou traços." }).optional()
+
+}).strict({ message: "Há parâmetros inválidos sendo enviados." });
 
 export async function editUser(req, res, _next) 
 {
   try {
+    const user = req.logeded;
+    if (!user || (user.type !== 'ADMIN' && user.type !== 'DIRECTOR')) {
+      return res.status(403).json({ error: "Acesso Negado: Apenas Administradores e Diretores podem editar usuários." });
+    }
+
     let id = Number(req.params.id);
     if (isNaN(id)) {
       return res.status(400).json({ error: "O número de identificação de usuário que você forneceu não é válido." });
@@ -200,6 +215,13 @@ export async function editUser(req, res, _next)
     }
 
     const data = parsed.data;
+
+    // Regra de bloqueio de campos: Diretor não mexe em CPF e TIPO
+    if (user.type === 'DIRECTOR') {
+        if (data.type !== undefined || data.cpf !== undefined) {
+            return res.status(403).json({ error: "Operação bloqueada: Diretores não têm permissão para alterar CPF ou Nível de Acesso (TYPE) de usuários." });
+        }
+    }
 
     let u = await prisma.user.findFirst({ where: { id: id } });
 
@@ -215,6 +237,7 @@ export async function editUser(req, res, _next)
     if(data.type !== undefined) u.type = data.type;
     if(data.status !== undefined) u.status = data.status;
     if(data.companyId !== undefined) u.companyId = data.companyId;
+    if(data.cpf !== undefined) u.cpf = data.cpf;
 
     await u.save();
 
