@@ -18,7 +18,7 @@ const courseSchema = z.object({
     workload: z.number().positive("A carga horária deve ser positiva").optional(),
     ranking: z.number().int().min(1),
     fieldOfStudy: z.string().min(2, "A área de estudo deve ter pelo menos 2 caracteres"),
-    companyId: z.number().int().positive()
+    companyId: z.number().int().positive().optional()
 });
 
 const courseEditSchema = z.object({
@@ -31,35 +31,42 @@ const courseEditSchema = z.object({
     companyId: z.number().int().positive().optional()
 });
 
-export async function createCourse(req , res , _next){
+export async function createCourse(req, res, _next) {
     try {
         const user = req.logeded;
         if (!user) return res.status(401).json({ error: "Você precisa estar logado para realizar esta operação." });
 
         const data = courseSchema.parse(req.body);
+        const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
 
         // Authorization Logic
         if (user.type === 'DIRECTOR') {
-            // Fetch user to check companyId
-            const dbUser = await prisma.user.findUnique({ where: { id: user.id } });
-            if (!dbUser || dbUser.companyId !== data.companyId) {
-                return res.status(403).json({ error: "Você só pode criar cursos para a empresa na qual está cadastrado." });
+            if (!dbUser || !dbUser.companyId) {
+                return res.status(403).json({ error: "Você não possui uma empresa vinculada para criar cursos." });
             }
+            // Auto vincula o curso à empresa do Diretor logado
+            data.companyId = dbUser.companyId; 
         } else if (user.type !== 'ADMIN') {
             return res.status(403).json({ error: "Apenas administradores ou diretores podem criar cursos." });
+        } else {
+            // ADMIN logic: Se nao passar no JSON, tenta pegar dele mesmo, ou exige
+            data.companyId = data.companyId || (dbUser && dbUser.companyId);
+            if (!data.companyId) {
+                return res.status(400).json({ error: "Administradores precisam informar o 'companyId' da empresa onde o curso será criado." });
+            }
         }
 
         console.log(data)
-        let c = await prisma.course.create({ 
-            data: { 
+        let c = await prisma.course.create({
+            data: {
                 ...data,
-                ownerId: user.id 
-            } 
+                ownerId: user.id
+            }
         });
         return res.status(201).json(c);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: "Erro de validação (Regras de negócio)", details: error.errors });
+            return res.status(400).json({ error: "Erro de validação (Regras de negócio)", details: error.issues });
         }
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             if (error.code === 'P2002') {
@@ -73,26 +80,26 @@ export async function createCourse(req , res , _next){
     }
 }
 
-export async function readCourse(req ,  res , _next) {
+export async function readCourse(req, res, _next) {
     try {
-        const{name,description ,workload_max,workload_min, ranking,ranking_max,ranking_min} =req.query;
+        const { name, description, workload_max, workload_min, ranking, ranking_max, ranking_min } = req.query;
 
-        let consult ={}
+        let consult = {}
 
-        if(name) consult.name = {contains: "%"+name+"%"}
-        if(description) consult.description = {contains: "%"+description+"%"}
+        if (name) consult.name = { contains: "%" + name + "%" }
+        if (description) consult.description = { contains: "%" + description + "%" }
 
-        if(workload_max && workload_min) {
+        if (workload_max && workload_min) {
             consult.workload = {
                 lt: Number(workload_max),
                 gt: Number(workload_min)
             }
         }
-        if(ranking) consult.ranking = Number(ranking)
-        if(ranking_max) consult.ranking = { ...consult.ranking, lt: Number(ranking_max) }
-        if(ranking_min) consult.ranking = { ...consult.ranking, gt: Number(ranking_min) }
+        if (ranking) consult.ranking = Number(ranking)
+        if (ranking_max) consult.ranking = { ...consult.ranking, lt: Number(ranking_max) }
+        if (ranking_min) consult.ranking = { ...consult.ranking, gt: Number(ranking_min) }
 
-        let courses = await prisma.course.findMany({where : consult});
+        let courses = await prisma.course.findMany({ where: consult });
         return res.status(200).json(courses);
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -102,17 +109,17 @@ export async function readCourse(req ,  res , _next) {
     }
 }
 
-export async function showCourse(req, res ,_next) {
+export async function showCourse(req, res, _next) {
     try {
         let id = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "ID inválido fornecido" });
 
-        let c = await prisma.course.findFirst({where : {id:id}});
-        
-        if(!c){
+        let c = await prisma.course.findFirst({ where: { id: id } });
+
+        if (!c) {
             return res.status(404).json({ error: "Não encontrei o curso especificado (ID: " + id + ")" });
         }
-        
+
         return res.status(200).json(c);
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -122,7 +129,7 @@ export async function showCourse(req, res ,_next) {
     }
 }
 
-export async function editCourse(req , res ,_next) {
+export async function editCourse(req, res, _next) {
     try {
         const user = req.logeded;
         if (!user) return res.status(401).json({ error: "Você precisa estar logado para realizar esta operação." });
@@ -131,10 +138,10 @@ export async function editCourse(req , res ,_next) {
         if (isNaN(id)) return res.status(400).json({ error: "ID inválido fornecido" });
 
         const data = courseEditSchema.parse(req.body);
-        
-        let c = await prisma.course.findFirst({where : {id:id}});
 
-        if(!c){
+        let c = await prisma.course.findFirst({ where: { id: id } });
+
+        if (!c) {
             return res.status(404).json({ error: "Não encontrei curso com o ID: " + id })
         };
 
@@ -148,22 +155,22 @@ export async function editCourse(req , res ,_next) {
             return res.status(403).json({ error: "Apenas administradores ou o diretor que criou o curso podem editá-lo." });
         }
 
-        c = attachSave(c,'course')
+        c = attachSave(c, 'course')
 
-        if(data.name) c.name = data.name;
-        if(data.description) c.description = data.description;
-        if(data.workload) c.workload = data.workload;
-        if(data.ranking) c.ranking = data.ranking;
-        if(data.fieldOfStudy) c.fieldOfStudy = data.fieldOfStudy;
-        if(data.companyId) c.companyId = data.companyId;
-        if(data.urlImg) c.urlImg = data.urlImg;
+        if (data.name) c.name = data.name;
+        if (data.description) c.description = data.description;
+        if (data.workload) c.workload = data.workload;
+        if (data.ranking) c.ranking = data.ranking;
+        if (data.fieldOfStudy) c.fieldOfStudy = data.fieldOfStudy;
+        if (data.companyId) c.companyId = data.companyId;
+        if (data.urlImg) c.urlImg = data.urlImg;
 
         await c.save();
 
         return res.status(202).json(c);
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: "Erro de validação (Regras de negócio)", details: error.errors });
+            return res.status(400).json({ error: "Erro de validação (Regras de negócio)", details: error.issues });
         }
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             if (error.code === 'P2002') {
@@ -179,7 +186,7 @@ export async function editCourse(req , res ,_next) {
         return res.status(500).json({ error: "Erro ao editar informações do curso", details: error.message });
     }
 }
-export async function deleteCourse(req , res ,_next) {
+export async function deleteCourse(req, res, _next) {
     try {
         const user = req.logeded;
         if (!user) return res.status(401).json({ error: "Você precisa estar logado para realizar esta operação." });
@@ -187,9 +194,9 @@ export async function deleteCourse(req , res ,_next) {
         let id = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "ID inválido fornecido" });
 
-        let c = await prisma.course.findFirst({where : {id:id}});
+        let c = await prisma.course.findFirst({ where: { id: id } });
 
-        if(!c){
+        if (!c) {
             return res.status(404).json({ error: "Não encontrei o curso com o ID: " + id })
         };
 
@@ -203,8 +210,8 @@ export async function deleteCourse(req , res ,_next) {
             return res.status(403).json({ error: "Apenas administradores ou o diretor que criou o curso podem deletá-lo." });
         }
 
-        await prisma.course.delete({where : {id:id}});
-   
+        await prisma.course.delete({ where: { id: id } });
+
         return res.status(202).json({ message: 'Curso removido com sucesso' });
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {

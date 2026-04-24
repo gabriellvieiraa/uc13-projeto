@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInR5cGUiOiJBRE1JTiIsImVtYWlsIjoibGVvbkB0ZXN0LmNvbSIsIm5hbWUiOiJMRU9OQVJETyBOUVVBUkVTTUEiLCJpYXQiOjE3NzY0NjcwMDQsImV4cCI6MTc3NjU1MzQwNH0.WSViQ6_iXOHjPUtVEQ3iTXMDoINoJtjf3HydWiA87B0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsInR5cGUiOiJESVJFQ1RPUiIsImVtYWlsIjoic2FsdmFkb3IxQHRlc3QuY29tIiwibmFtZSI6IlNBTFZBRE9SIERBTEkiLCJpYXQiOjE3NzcwNzM1OTQsImV4cCI6MTc3NzE1OTk5NH0.2lUxWKVU6_OIKo7f_9e63Hjnnsc_14YcDhmUs2kqwBY
 
 
 ### criando um curso
@@ -13,10 +13,29 @@ content-type: application/json
     "ranking": 6, 
     "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
     "fieldOfStudy":"Tecnologia",
-    "companyId":2
+    
 }
 
-### criando um curso
+### criando um curso Teste Diretor
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+    "name":"Tecnico em ADM",
+    "description" : "O curso Técnico em ADM ",
+    "workload": 2000,
+    "ranking": 6, 
+    "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
+    "fieldOfStudy":"Administração"
+    
+    
+}
+
+
+
+
+### criando um curso Teste ADM
 POST http://localhost:3000/course HTTP/1.1
 Authorization: Bearer {{token}}
 content-type: application/json
@@ -29,6 +48,7 @@ content-type: application/json
     "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
     "fieldOfStudy":"Administração",
     "companyId":1
+    
 }
 
 ### Listar todos os cursos ? -> query
@@ -46,17 +66,18 @@ GET https://uc13-projeto-2xiu.onrender.com/course?description=Inf HTTP/1.1
 GET https://uc13-projeto-2xiu.onrender.com/course?workload_max=2000  HTTP/1.1
 content-type: application/json
 
-#
+###
 GET https://uc13-projeto-2xiu.onrender.com/course?workload_min=100  HTTP/1.1
 content-type: application/json
-### listar todos o curso
 
+
+### listar todos o curso
 GET http://localhost:3000/course HTTP/1.1
 content-type: application/json
 
 
 
-# Rankings
+### Rankings
 GET https://uc13-projeto-2xiu.onrender.com/course?ranking HTTP/1.1
 content-type: application/json
 
@@ -75,7 +96,7 @@ content-type: application/json
 
 ### Realiza uma mudança;
 
-PUT https://uc13-projeto-2xiu.onrender.com/course/99 HTTP/1.1
+PUT https://uc13-projeto-2xiu.onrender.com/course/3 HTTP/1.1
 content-type : application/json
 
 {
@@ -84,7 +105,7 @@ content-type : application/json
 }
 ### Editando o curso;
 
-PUT http://localhost:3000/course/9 HTTP/1.1
+PUT http://localhost:3000/course/1 HTTP/1.1
 content-type : application/json
 
 {
@@ -92,7 +113,7 @@ content-type : application/json
   "description" : "O curso Técnico em Administração prepara profissionais para atuar em diversas áreas da administração"
 }
 
-#
+####
 PUT https://uc13-projeto-2xiu.onrender.com/course/1 HTTP/1.1
 content-type: application/json
 
