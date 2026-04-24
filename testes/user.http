@@ -1,7 +1,8 @@
 ### Login de usuário
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoibGVvbkBleHBsYWluLmV4YW1wbGUiLCJpYXQiOjE3NDQwMzE2MzMsImV4cCI6MTc0NDkzNzYzM30.0d4_lD57N5iP2xXm9FqG8XbS61-bE48Q7_nU0Rj-QnY
 POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "email": "leon@test.com",
@@ -11,6 +12,7 @@ Content-Type: application/json
 ### criando um usuario completo com SENHA
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "LEONARDO NQUARESMA",
@@ -23,8 +25,9 @@ Content-Type: application/json
 }
 
 ### TESTE DE ERRO 1: Criando usuário com TIPO INEXISTENTE (TEACHER)
-POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Kevin Valido",
@@ -36,8 +39,9 @@ Content-Type: application/json
 }
 
 ### TESTE DE ERRO 2: Criando usuário com NOME SENDO NÚMERO (Inválido)
-POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": 12345,
@@ -48,8 +52,9 @@ Content-Type: application/json
 }
 
 ### TESTE DE ERRO 3: Criando usuário com NOME COM LETRAS INSUFICIENTES OU CARACTERES ESPECIAIS
-POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "A_",
@@ -60,8 +65,9 @@ Content-Type: application/json
 }
 
 ### TESTE DE ERRO 4: Criando usuário com CPF CONTENDO LETRAS E TAMANHO ERRADO
-POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Maria Teste",
@@ -72,8 +78,9 @@ Content-Type: application/json
 }
 
 ### TESTE DE ERRO 5: Criando usuário com EMAIL INCORRETO
-POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Maria Teste",
@@ -84,8 +91,9 @@ Content-Type: application/json
 }
 
 ### TESTE DE ERRO 6: Criando usuário com CAMPOS DESCONHECIDOS (Ativará o STRICT do schema)
-POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Hackerzin",
@@ -97,8 +105,9 @@ Content-Type: application/json
 }
 
 ### TESTE DE ERRO 7: Criando usuário com DATA DE NASCIMENTO NO FUTURO
-POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Fulano Viajante do Tempo",
@@ -108,8 +117,9 @@ Content-Type: application/json
 }
 
 ### TESTE DE ERRO 8: Criando usuário com NOME GIGANTE (+100 Caracteres)
-POST https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
+POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Este Nome E Extremamente Longo E Passa Dos Limites Permitidos Pelo Banco De Dados Entao O Zod Deve Bloquear Porque Isso Nao Pode Acontecer De Jeito Nenhum Com Centenas De Caracteres",
@@ -119,36 +129,45 @@ Content-Type: application/json
 
 
 ### Listar todos os usuários
-GET https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
-content-type:aplication.json
+GET http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Filtrar pelo atributo nome
-GET https://uc13-projeto-2xiu.onrender.com/user?name=Vanessa HTTP/1.1
-content-type:aplication.json
+GET http://localhost:3000/user?name=Vanessa HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Filtrar pelo status
-GET https://uc13-projeto-2xiu.onrender.com/user?status=ATIVO HTTP/1.1
-content-type:aplication.json
+GET http://localhost:3000/user?status=ATIVO HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Filtrar pelo tipo "TEACHER"
-GET https://uc13-projeto-2xiu.onrender.com/user?type=TEACHER HTTP/1.1  
-content-type:aplication.json
+GET http://localhost:3000/user?type=TEACHER HTTP/1.1  
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 
 ### Filtrar pelo tipo "ADMIN"
-GET https://uc13-projeto-2xiu.onrender.com/user?type=ADMIN HTTP/1.1
-content-type:aplication.json
+GET http://localhost:3000/user?type=ADMIN HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Mostrar um único usuário
-GET https://uc13-projeto-2xiu.onrender.com/user/2 HTTP/1.1 
-content-type:aplication.json
+GET http://localhost:3000/user/2 HTTP/1.1 
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Listar usuários nascidos entre 1990 e 2000
-GET https://uc13-projeto-2xiu.onrender.com/user?birth_min=1990-01-01&birth_max=2000-12-31 HTTP/1.1
-content-type: application/json
+GET http://localhost:3000/user?birth_min=1990-01-01&birth_max=2000-12-31 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Mostrar o usuário que eu quero editar
-PUT https://uc13-projeto-2xiu.onrender.com/user/2 HTTP/1.1
+PUT http://localhost:3000/user/2 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Lucas",
@@ -157,13 +176,16 @@ Content-Type: application/json
 }
 
 ### Deletar o usuário
-DELETE https://uc13-projeto-2xiu.onrender.com/user/1 HTTP/1.1
+DELETE http://localhost:3000/user/1 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Listar todos os usuários
-GET https://uc13-projeto-2xiu.onrender.com/user/ HTTP/1.1
-content-type:aplication.json
+GET http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ### Deletar o usuário
-DELETE https://uc13-projeto-2xiu.onrender.com/user/5 HTTP/1.1
+DELETE http://localhost:3000/user/5 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
