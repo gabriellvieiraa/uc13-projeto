@@ -67,8 +67,13 @@ export async function readCategorie(req, res, _next) {
         if (description) consult.description = { contains: description };
 
         let categories = await prisma.category.findMany({ where: consult });
+        console.log("--- DEBUG READ CATEGORIES (LIST) ---");
+        console.log("Total encontradas:", categories.length);
+        console.log("IDs encontrados:", categories.map(c => c.id));
+        
         return res.status(200).json(categories);
     } catch (error) {
+        console.error("ERRO EM READ CATEGORIE:", error);
         return res.status(500).json({ error: "Erro interno ao buscar categorias." });
     }
 }
@@ -76,13 +81,17 @@ export async function readCategorie(req, res, _next) {
 export async function showCategorie(req, res, _next) {
     try {
         let id = Number(req.params.id);
+        console.log("--- DEBUG SHOW CATEGORIE ---");
+        console.log("ID Recebido:", id);
+        console.log("Params totais:", req.params);
 
         // Exceção: ID inválido
         if (isNaN(id)) {
             return res.status(400).json({ error: "O ID informado não é válido." });
         }
 
-        let c = await prisma.category.findFirst({ where: { id: id } });
+        let c = await prisma.category.findUnique({ where: { id: id } });
+        console.log("Resultado encontrado no Banco:", c);
 
         // Exceção: Não encontrado
         if (!c) {
