@@ -1,23 +1,19 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInR5cGUiOiJESVJFQ1RPUiIsImVtYWlsIjoiZ2FicmllbEB0ZXN0LmNvbSIsIm5hbWUiOiJHQUJSSUVMIE5RVUFSRVNNQSIsImlhdCI6MTc3NjQ3NDY1OCwiZXhwIjoxNzc2NTYxMDU4fQ.LZCuB3Tbnhw7NqI9rm41nhwPgex6phdIpPU6CSe2JSc
-
-
 ### [ATENÇÃO] 1. FAÇA O LOGIN PRIMEIRO PARA PEGAR O SEU TOKEN
-### Substitua pelo seu email e senha criados em "user"
+# @name login
 POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "gabriel@test.com",
+  "email": "leon@test.com",
   "password": "senhasegura"
 }
 
 ### -----------------------------------------------------
 
 ### [LOCAL] Criando companhia completa (Sucesso)
-### Importante: Substitua <COLE_SEU_TOKEN_AQUI> pelo token que o /login retornar!
 POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "name": "TESTE LOCAL LTDA",          
@@ -31,7 +27,7 @@ Authorization: Bearer {{token}}
 ### [PRODUCAO] Criando companhia completa (Sucesso)
 POST https://uc13-projeto-2xiu.onrender.com/companie HTTP/1.1
 content-type: application/json
-Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "name": "SERVICO NACIONAL DE APRENDIZAGEM COMERCIAL SENAC",          
@@ -45,7 +41,7 @@ Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
 ### TESTE DE ERRO 1: Criando companhia com NOME VAZIO
 POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
-Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "name": "",          
@@ -59,7 +55,7 @@ Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
 ### TESTE DE ERRO 2: Criando companhia com CNPJ INVÁLIDO
 POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
-Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "name": "ETEC CARLOS BOTELHO",          
@@ -73,7 +69,7 @@ Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
 ### TESTE DE ERRO 3: Criando companhia com DATA DE FUNDAÇÃO NO FUTURO
 POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
-Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "name": "EMPRESA DO FUTURO",          
@@ -87,7 +83,7 @@ Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
 ### TESTE DE ERRO 4: Criando companhia FALTANDO OBRIGATÓRIOS (Sem métodos)
 POST http://localhost:3000/companie HTTP/1.1
 content-type: application/json
-Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "name": "EMPRESA SEM METODO",          
@@ -124,7 +120,7 @@ content-type: application/json
 ### Editar a companhia (ID de exemplo - Requer Token)
 PUT http://localhost:3000/companie/6 HTTP/1.1
 content-type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "name": "TUCANO NACIONAL DE APRENDIZAGEM INDUSTRIAL SENAI",          
@@ -136,4 +132,4 @@ Authorization: Bearer {{token}}
 ### Deletar a companhia (Requer Token)
 DELETE http://localhost:3000/companie/2 HTTP/1.1
 content-type: application/json
-Authorization: Bearer <COLE_SEU_TOKEN_AQUI>
+Authorization: Bearer {{login.response.body.token}}

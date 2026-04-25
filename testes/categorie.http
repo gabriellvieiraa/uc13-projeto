@@ -1,9 +1,17 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInR5cGUiOiJBRE1JTiIsImVtYWlsIjoibGVvbkB0ZXN0LmNvbSIsIm5hbWUiOiJMRU9OQVJETyBOUVVBUkVTTUEiLCJpYXQiOjE3NzcwNjk0MjcsImV4cCI6MTc3NzE1NTgyN30.dcncZph4NRMjRvt2oVEXSrOX8sA6ojt8yxQ7ErkStGs
+### Login de usuário
+# @name login
+POST http://localhost:3000/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "leon@test.com",
+  "password": "senhasegura"
+}
 
 ### criando categoria
 POST http://localhost:3000/categorie HTTP/1.1
 content-type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "name":"fisioterapia",          
@@ -36,7 +44,7 @@ content-type: application/json
 ### Editar Categoria (Requer Token de ADM)
 PUT https://uc13-projeto-2xiu.onrender.com/categorie/9 HTTP/1.1
 content-type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
     "name": "Estética Avançada",          
@@ -46,4 +54,4 @@ Authorization: Bearer {{token}}
 ### Deletar Categoria (Requer Token de ADM)
 DELETE http://localhost:3000/categorie/2 HTTP/1.1
 content-type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}

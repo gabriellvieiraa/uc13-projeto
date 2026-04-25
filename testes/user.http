@@ -1,14 +1,7 @@
 ### Login de usuário
-<<<<<<< HEAD
 # @name login
 POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
-=======
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInR5cGUiOiJBRE1JTiIsImVtYWlsIjoibGVvbkB0ZXN0LmNvbSIsIm5hbWUiOiJMRU9OQVJETyBOUVVBUkVTTUEiLCJpYXQiOjE3NzcwNjk0MjcsImV4cCI6MTc3NzE1NTgyN30.dcncZph4NRMjRvt2oVEXSrOX8sA6ojt8yxQ7ErkStGs
-POST http://localhost:3000/user/login HTTP/1.1
-Content-Type: application/json
-
->>>>>>> ad15f96605363167f3b0caa79717ea9e88fe6e48
 
 {
   "email": "leon@test.com",
