@@ -94,6 +94,15 @@ export async function createCompanie(req, res, _next) {
         data.ownerId = ownerId;
 
         let u = await prisma.company.create({ data });
+
+        // Vincula automaticamente o usuário (diretor) à nova companhia
+        if (user.type === 'DIRECTOR') {
+            await prisma.user.update({
+                where: { id: user.id },
+                data: { companyId: u.id }
+            });
+        }
+
         return res.status(201).json(u);
     } catch (error) {
         if (error instanceof z.ZodError) {
