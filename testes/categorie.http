@@ -1,36 +1,44 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsInR5cGUiOiJBRE1JTiIsImVtYWlsIjoiZ2FicmllbEB0ZXN0LmNvbSIsIm5hbWUiOiJHQUJSSUVMIE5RVUFSRVNNQSIsImlhdCI6MTc3NjQ3NDY1OCwiZXhwIjoxNzc2NTYxMDU4fQ.LZCuB3Tbnhw7NqI9rm41nhwPgex6phdIpPU6CSe2JSc
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInR5cGUiOiJBRE1JTiIsImVtYWlsIjoiZ2FiaUB0ZXN0LmNvbSIsIm5hbWUiOiJHYWJyaWVsIFZpZWlyYSIsImlhdCI6MTc3NzA3NjAxNCwiZXhwIjoxNzc3MTYyNDE0fQ.2imQo9nBY6N_2-_wBI7ExrDBKW98qSsS-Oq1hBkP-PU
 
-### criando categoria
+### criando categoria [PRODUÇÃO]
 POST https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}
 
 {
-    "name":"fisioterapia",          
-    "description":"fisioterapia e reabilitação"       
+    "name":"Desenvolvimento de Sistemas",          
+    "description":"cursos de desenvolvimento de sistemas"       
 }
 
-### criando categoria
-POST https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
+### criando categoria [LOCAL]
+POST http://localhost:3000/categorie HTTP/1.1
 content-type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "name":"ti",          
-    "description":"cursos de tecnologia da informação"       
+    "name":"Ed.Física",          
+    "description":"cursos de educação física"       
 }
 
 
-### Listar todas as categorias ? -> query
-# chave=valor
+### Listar todas as categorias [PRODUÇÃO]
 GET https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
+content-type: application/json
+
+### Listar todas as categorias [LOCAL]
+GET http://localhost:3000/categorie HTTP/1.1
 content-type: application/json
 
 ### Filtrar categorias por descrição (Exemplo de Query)
 GET http://localhost:3000/categorie?description=design HTTP/1.1
 content-type: application/json
 
-### Mostrar uma única categoria por ID (Rota Aberta)
-GET http://localhost:3000/categorie/1 HTTP/1.1
+### Mostrar uma única categoria por ID (Local)
+GET http://localhost:3000/categorie/5 HTTP/1.1
+content-type: application/json
+
+### Mostrar uma única categoria [PRODUÇÃO]
+GET https://uc13-projeto-2xiu.onrender.com/categorie/1 HTTP/1.1
 content-type: application/json
 
 ### Editar Categoria (Requer Token de ADM)
@@ -43,7 +51,7 @@ Authorization: Bearer {{token}}
     "description": "Curso presencial e a distância na área de estética, focando em conceitos, estilos, técnicas e tendências da área."       
 }
 
-### Deletar Categoria (Requer Token de ADM)
-DELETE http://localhost:3000/categorie/2 HTTP/1.1
+### Deletar Categoria 
+DELETE http://localhost:3000/categorie/1 HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{token}}

@@ -2,11 +2,10 @@
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoibGVvbkBleHBsYWluLmV4YW1wbGUiLCJpYXQiOjE3NDQwMzE2MzMsImV4cCI6MTc0NDkzNzYzM30.0d4_lD57N5iP2xXm9FqG8XbS61-bE48Q7_nU0Rj-QnY
 POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
 
 {
-  "email": "leon@test.com",
-  "password": "senhasegura"
+  "email": "gabi@test.com",
+  "password": "1234567"
 }
 
 ### criando um usuario completo com SENHA
@@ -15,10 +14,10 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "LEONARDO NQUARESMA",
-  "cpf": "12345672200",
-  "email": "leon@test.com",
-  "password": "senhasegura",
+  "name": "Gabriel Vieira",
+  "cpf": "12345678800",
+  "email": "gabi@test.com",
+  "password": "1234567",
   "type": "ADMIN",
   "status": "ATIVO",
   "birthDate": "1995-05-10T00:00:00.000Z"
