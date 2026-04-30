@@ -1,11 +1,24 @@
+
+### login diretor DIRECTOR
+# @name login
+POST http://localhost:3000/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "vanessa@test.com",
+  "password": "1234567"
+}
+
+
+
 ### Login de usuário
 # @name login
 POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "leon@test.com",
-  "password": "senhasegura"
+  "email": "gabi@test.com",
+  "password": "1234567"
 }
 
 ### criando categoria
@@ -16,6 +29,18 @@ Authorization: Bearer {{login.response.body.token}}
 {
     "name":"fisioterapia",          
     "description":"fisioterapia e reabilitação"       
+}
+
+### criando categoria
+POST http://localhost:3000/categorie HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "name":"Tecnologia da Informação",          
+    "description":"Cursos voltados para programação, redes, sistemas e tecnologia em geral"      
+    
+     
 }
 
 ### criando categoria

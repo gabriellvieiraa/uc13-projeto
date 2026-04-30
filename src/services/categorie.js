@@ -66,7 +66,7 @@ export async function readCategorie(req, res, _next) {
         if (name) consult.name = { contains: name };
         if (description) consult.description = { contains: description };
 
-        let categories = await prisma.category.findMany({ where: consult });
+        let categories = await prisma.category.findMany({ where: consult, include: { courses: true } });
         console.log("--- DEBUG READ CATEGORIES (LIST) ---");
         console.log("Total encontradas:", categories.length);
         console.log("IDs encontrados:", categories.map(c => c.id));
@@ -90,7 +90,7 @@ export async function showCategorie(req, res, _next) {
             return res.status(400).json({ error: "O ID informado não é válido." });
         }
 
-        let c = await prisma.category.findUnique({ where: { id: id } });
+        let c = await prisma.category.findUnique({ where: { id: id }, include: { courses: true } });
         console.log("Resultado encontrado no Banco:", c);
 
         // Exceção: Não encontrado

@@ -1,6 +1,5 @@
 import { PrismaClient, Prisma } from "@prisma/client";
 import { z } from 'zod';
-import { attachSave } from "../utils/save.js";
 
 const prisma = new PrismaClient();
 
@@ -18,7 +17,8 @@ const courseSchema = z.object({
     workload: z.number().positive("A carga horária deve ser positiva").optional(),
     ranking: z.number().int().min(1),
     fieldOfStudy: z.string().min(2, "A área de estudo deve ter pelo menos 2 caracteres"),
-    companyId: z.number().int().positive().optional()
+    companyId: z.number().int().positive().optional(),
+    categoryIds: z.array(z.number().int().positive()).optional()
 });
 
 const courseEditSchema = z.object({
@@ -28,7 +28,8 @@ const courseEditSchema = z.object({
     workload: z.number().positive().optional(),
     ranking: z.number().int().min(1).optional(),
     fieldOfStudy: z.string().min(2).optional(),
-    companyId: z.number().int().positive().optional()
+    companyId: z.number().int().positive().optional(),
+    categoryIds: z.array(z.number().int().positive()).optional()
 });
 
 export async function createCourse(req, res, _next) {
@@ -56,12 +57,21 @@ export async function createCourse(req, res, _next) {
             }
         }
 
-        console.log(data)
-        let c = await prisma.course.create({
-            data: {
-                ...data,
-                ownerId: user.id
-            }
+        const { categoryIds, ...coursePayload } = data;
+        const createData = {
+            ...coursePayload,
+            ownerId: user.id
+        };
+
+        if (categoryIds && categoryIds.length > 0) {
+            createData.categories = {
+                connect: categoryIds.map(id => ({ id }))
+            };
+        }
+
+        const c = await prisma.course.create({
+            data: createData,
+            include: { categories: true }
         });
         return res.status(201).json(c);
     } catch (error) {
@@ -99,7 +109,7 @@ export async function readCourse(req, res, _next) {
         if (ranking_max) consult.ranking = { ...consult.ranking, lt: Number(ranking_max) }
         if (ranking_min) consult.ranking = { ...consult.ranking, gt: Number(ranking_min) }
 
-        let courses = await prisma.course.findMany({ where: consult });
+        let courses = await prisma.course.findMany({ where: consult, include: { categories: true } });
         return res.status(200).json(courses);
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -114,7 +124,7 @@ export async function showCourse(req, res, _next) {
         let id = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "ID inválido fornecido" });
 
-        let c = await prisma.course.findFirst({ where: { id: id } });
+        let c = await prisma.course.findFirst({ where: { id: id }, include: { categories: true } });
 
         if (!c) {
             return res.status(404).json({ error: "Não encontrei o curso especificado (ID: " + id + ")" });
@@ -155,19 +165,26 @@ export async function editCourse(req, res, _next) {
             return res.status(403).json({ error: "Apenas administradores ou o diretor que criou o curso podem editá-lo." });
         }
 
-        c = attachSave(c, 'course')
+        const { categoryIds, ...coursePayload } = data;
+        const updateData = { ...coursePayload };
 
-        if (data.name) c.name = data.name;
-        if (data.description) c.description = data.description;
-        if (data.workload) c.workload = data.workload;
-        if (data.ranking) c.ranking = data.ranking;
-        if (data.fieldOfStudy) c.fieldOfStudy = data.fieldOfStudy;
-        if (data.companyId) c.companyId = data.companyId;
-        if (data.urlImg) c.urlImg = data.urlImg;
+        if (categoryIds) {
+            updateData.categories = {
+                set: categoryIds.map(id => ({ id }))
+            };
+        }
 
-        await c.save();
+        if (Object.keys(updateData).length === 0) {
+            return res.status(400).json({ error: "Nenhuma informação válida enviada para atualização." });
+        }
 
-        return res.status(202).json(c);
+        const updatedCourse = await prisma.course.update({
+            where: { id },
+            data: updateData,
+            include: { categories: true }
+        });
+
+        return res.status(202).json(updatedCourse);
     } catch (error) {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: "Erro de validação (Regras de negócio)", details: error.issues });

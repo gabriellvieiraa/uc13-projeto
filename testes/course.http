@@ -4,13 +4,31 @@ POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "leon@test.com",
-  "password": "senhasegura"
+  "email": "vanessa@test.com",
+  "password": "1234567"
+}
+
+
+###
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{login.response.body.token}}
+content-type: application/json
+
+{
+    "name":"Técnico em batatinha",
+    "description":"Curso voltado para reabilitação física",
+    "workload": 1800,
+    "ranking": 8, 
+    "urlImg":"https://images.unsplash.com/photo-1584515933487-779824d29309",
+    "fieldOfStudy":"Saúde",
+    "companyId": 1,
+
+    "categoryIds": [1, 2]
 }
 
 
 ### criando um curso
-POST https://uc13-projeto-2xiu.onrender.com/course HTTP/1.1
+POST http://localhost:3000/course HTTP/1.1
 Authorization: Bearer {{login.response.body.token}}
 content-type: application/json
 
@@ -23,6 +41,21 @@ content-type: application/json
     "fieldOfStudy":"Tecnologia"
     
 }
+
+### criando um curso Teste Informática
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{login.response.body.token}}
+content-type: application/json
+
+{
+    "name":"Técnico em Administração",
+    "description" : "Curso focado em gestão empresarial, finanças e rotinas administrativas.",
+    "workload": 1600,
+    "ranking": 7, 
+    "urlImg":"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+    "fieldOfStudy":"Negócios"
+}
+
 
 ### criando um curso Teste Diretor
 POST http://localhost:3000/course HTTP/1.1

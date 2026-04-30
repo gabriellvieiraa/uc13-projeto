@@ -1,4 +1,4 @@
-### Login de usuário
+### Login de usuário ADMIN
 # @name login
 POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
@@ -7,6 +7,17 @@ Content-Type: application/json
   "email": "gabi@test.com",
   "password": "1234567"
 }
+
+### login diretor DIRECTOR
+# @name login
+POST http://localhost:3000/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "vanessa@test.com",
+  "password": "1234567"
+}
+
 
 ### criando um usuario completo com SENHA
 POST http://localhost:3000/user/ HTTP/1.1
@@ -19,6 +30,22 @@ Authorization: Bearer {{login.response.body.token}}
   "email": "gabi@test.com",
   "password": "1234567",
   "type": "ADMIN",
+  "status": "ATIVO",
+  "birthDate": "1995-05-10T00:00:00.000Z"
+}
+
+
+### criando um usuario completo com SENHA
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+  "name": "Vanessa Sales",
+  "cpf": "22345678800",
+  "email": "vanessa@test.com",
+  "password": "1234567",
+  "type": "DIRECTOR",
   "status": "ATIVO",
   "birthDate": "1995-05-10T00:00:00.000Z"
 }
@@ -147,6 +174,11 @@ GET http://localhost:3000/user?type=TEACHER HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
+### Filtrar pelo tipo "DIRECTOR"
+GET http://localhost:3000/user?type=DIRECTOR HTTP/1.1  
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
 
 ### Filtrar pelo tipo "ADMIN"
 GET http://localhost:3000/user?type=ADMIN HTTP/1.1
@@ -154,7 +186,7 @@ Content-Type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
 ### Mostrar um único usuário
-GET http://localhost:3000/user/2 HTTP/1.1 
+GET http://localhost:3000/user/1 HTTP/1.1 
 Content-Type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
@@ -164,7 +196,7 @@ Content-Type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
 ### Mostrar o usuário que eu quero editar
-PUT http://localhost:3000/user/2 HTTP/1.1
+PUT http://localhost:3000/user/1 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
@@ -185,6 +217,6 @@ Content-Type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
 ### Deletar o usuário (Somente Admin)
-DELETE http://localhost:3000/user/3 HTTP/1.1
+DELETE http://localhost:3000/user/2 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{login.response.body.token}}
