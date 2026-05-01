@@ -220,3 +220,128 @@ Authorization: Bearer {{token}}
 DELETE http://localhost:3000/user/2 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+
+###########################################################################
+### TESTES DE VALIDAÇÃO DE CPF
+###########################################################################
+
+### TESTE 1: CPF Válido (111.444.777-35) - Deve ACEITAR
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "João da Silva",
+  "cpf": "11144477735",
+  "email": "joao.silva@test.com",
+  "password": "senha123",
+  "type": "DIRECTOR",
+  "status": "ATIVO",
+  "birthDate": "1990-03-15T00:00:00.000Z"
+}
+
+### TESTE 2: CPF Válido (000.000.001-91) - Deve ACEITAR
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Maria Santos",
+  "cpf": "00000000191",
+  "email": "maria.santos@test.com",
+  "password": "senha456",
+  "type": "DIRECTOR",
+  "status": "ATIVO",
+  "birthDate": "1985-07-20T00:00:00.000Z"
+}
+
+### TESTE 3: CPF INVÁLIDO - Todos dígitos iguais (11111111111) - Deve REJEITAR
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Fake User",
+  "cpf": "11111111111",
+  "email": "fake1@test.com",
+  "password": "senha789",
+  "type": "DIRECTOR",
+  "status": "ATIVO"
+}
+
+### TESTE 4: CPF INVÁLIDO - Todos dígitos iguais (00000000000) - Deve REJEITAR
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Fake User 2",
+  "cpf": "00000000000",
+  "email": "fake2@test.com",
+  "password": "senha789",
+  "type": "DIRECTOR",
+  "status": "ATIVO"
+}
+
+### TESTE 5: CPF INVÁLIDO - Dígito verificador errado (11144477734) - Deve REJEITAR
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Wrong CPF User",
+  "cpf": "11144477734",
+  "email": "wrong@test.com",
+  "password": "senha789",
+  "type": "DIRECTOR",
+  "status": "ATIVO"
+}
+
+### TESTE 6: CPF COM PONTOS E TRAÇOS (111.444.777-35) - Será aceito? (remove caracteres especiais)
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Formatted CPF",
+  "cpf": "111.444.777-35",
+  "email": "formatted@test.com",
+  "password": "senha789",
+  "type": "DIRECTOR",
+  "status": "ATIVO"
+}
+
+### TESTE 7: CPF com LETRAS (1114447773A) - Deve REJEITAR
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Letter CPF",
+  "cpf": "1114447773A",
+  "email": "letter@test.com",
+  "password": "senha789",
+  "type": "DIRECTOR",
+  "status": "ATIVO"
+}
+
+### TESTE 8: CPF INCOMPLETO (111444777) - Deve REJEITAR (menos de 11 dígitos)
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Short CPF",
+  "cpf": "111444777",
+  "email": "short@test.com",
+  "password": "senha789",
+  "type": "DIRECTOR",
+  "status": "ATIVO"
+}
+
+### TESTE 9: CPF COM ESPAÇOS (111 444 777 35) - Deve REJEITAR (contém espaços)
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Space CPF",
+  "cpf": "111 444 777 35",
+  "email": "space@test.com",
+  "password": "senha789",
+  "type": "DIRECTOR",
+  "status": "ATIVO"
+}
+

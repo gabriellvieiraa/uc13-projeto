@@ -5,6 +5,44 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();     //função
 import {attachSave} from "../utils/save.js";
+
+//Função para validar CPF (dígito verificador)
+function isValidCPF(cpf) {
+  // Remove pontos e traços (caso alguém envie formatado)
+  cpf = cpf.replace(/\D/g, '');
+  
+  // Deve ter exatamente 11 dígitos
+  if (cpf.length !== 11) return false;
+  
+  // CPFs conhecidos como inválidos
+  const invalidCPFs = ['00000000000', '11111111111', '22222222222', '33333333333', 
+                       '44444444444', '55555555555', '66666666666', '77777777777', 
+                       '88888888888', '99999999999'];
+  if (invalidCPFs.includes(cpf)) return false;
+
+  // Validar primeiro dígito verificador
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(cpf.charAt(i)) * (10 - i);
+  }
+  let remainder = sum % 11;
+  let digit1 = remainder < 2 ? 0 : 11 - remainder;
+
+  if (parseInt(cpf.charAt(9)) !== digit1) return false;
+
+  // Validar segundo dígito verificador
+  sum = 0;
+  for (let i = 0; i < 10; i++) {
+    sum += parseInt(cpf.charAt(i)) * (11 - i);
+  }
+  remainder = sum % 11;
+  let digit2 = remainder < 2 ? 0 : 11 - remainder;
+
+  if (parseInt(cpf.charAt(10)) !== digit2) return false;
+
+  return true;
+}
+
 //com esse prisma eu consigo acessar o banco de dados
 
 //Fazer uma função que vai manipular o banco de dados. O CRUD cria
@@ -36,7 +74,8 @@ const createUserSchema = z.object({
     invalid_type_error: "O formato do CPF é inválido."
   })
   .length(11, { message: "O CPF deve conter exatamente 11 dígitos numéricos." })
-  .regex(/^\d+$/, { message: "O CPF deve conter apenas números, sem pontos (')') ou traços ('-')." }),
+  .regex(/^\d+$/, { message: "O CPF deve conter apenas números, sem pontos ou traços." })
+  .refine(isValidCPF, { message: "O CPF informado é inválido. Verifique os dígitos verificadores." }),
   
   email: z.string({ 
     required_error: "O preenchimento do e-mail é obrigatório.",
