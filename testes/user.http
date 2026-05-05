@@ -8,14 +8,37 @@ Content-Type: application/json
   "password": "1234567"
 }
 
+### Verificar se login funcionou (opcional)
+GET http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+###
+PUT http://localhost:3000/user/{{loginDirector.response.body.user.id}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{loginDirector.response.body.token}}
+
+{
+  "password": "novaSenha123456"
+}
+
 ### login diretor DIRECTOR
-# @name login
+# @name loginDirector
 POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
 
 {
   "email": "vanessa@test.com",
-  "password": "1234567"
+  "password": "novaSenha123456"
+}
+
+### Trocar senha própria (DIRECTOR)
+PUT http://localhost:3000/user/{{loginDirector.response.body.user.id}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{loginDirector.response.body.token}}
+
+{
+  "password": "novaSenhaDirector123"
 }
 
 
@@ -26,7 +49,7 @@ Content-Type: application/json
 
 {
   "name": "Gabriel Vieira ",
-  "cpf": "12345672200",
+  "cpf": "29508486805",
   "email": "gabi@test.com",
   "password": "1234567",
   "type": "ADMIN",
@@ -42,7 +65,7 @@ Authorization: Bearer {{login.response.body.token}}
 
 {
   "name": "Vanessa Sales",
-  "cpf": "22345678800",
+  "cpf": "29508486805",
   "email": "vanessa@test.com",
   "password": "1234567",
   "type": "DIRECTOR",
@@ -53,7 +76,7 @@ Authorization: Bearer {{login.response.body.token}}
 ### TESTE DE ERRO 1: Criando usuário com TIPO INEXISTENTE (TEACHER)
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
   "name": "Kevin Valido",
@@ -67,7 +90,7 @@ Authorization: Bearer {{token}}
 ### TESTE DE ERRO 2: Criando usuário com NOME SENDO NÚMERO (Inválido)
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
   "name": 12345,
@@ -80,7 +103,7 @@ Authorization: Bearer {{token}}
 ### TESTE DE ERRO 3: Criando usuário com NOME COM LETRAS INSUFICIENTES OU CARACTERES ESPECIAIS
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
   "name": "A_",
@@ -93,7 +116,7 @@ Authorization: Bearer {{token}}
 ### TESTE DE ERRO 4: Criando usuário com CPF CONTENDO LETRAS E TAMANHO ERRADO
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
   "name": "Maria Teste",
@@ -106,7 +129,7 @@ Authorization: Bearer {{token}}
 ### TESTE DE ERRO 5: Criando usuário com EMAIL INCORRETO
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
   "name": "Maria Teste",
@@ -119,7 +142,7 @@ Authorization: Bearer {{token}}
 ### TESTE DE ERRO 6: Criando usuário com CAMPOS DESCONHECIDOS (Ativará o STRICT do schema)
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
   "name": "Hackerzin",
@@ -133,7 +156,7 @@ Authorization: Bearer {{token}}
 ### TESTE DE ERRO 7: Criando usuário com DATA DE NASCIMENTO NO FUTURO
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
   "name": "Fulano Viajante do Tempo",
@@ -145,7 +168,7 @@ Authorization: Bearer {{token}}
 ### TESTE DE ERRO 8: Criando usuário com NOME GIGANTE (+100 Caracteres)
 POST http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 {
   "name": "Este Nome E Extremamente Longo E Passa Dos Limites Permitidos Pelo Banco De Dados Entao O Zod Deve Bloquear Porque Isso Nao Pode Acontecer De Jeito Nenhum Com Centenas De Caracteres",
@@ -157,22 +180,22 @@ Authorization: Bearer {{token}}
 ### Listar todos os usuários
 GET http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### Filtrar pelo atributo nome
 GET http://localhost:3000/user?name=Vanessa HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### Filtrar pelo status
 GET http://localhost:3000/user?status=ATIVO HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### Filtrar pelo tipo "TEACHER"
 GET http://localhost:3000/user?type=TEACHER HTTP/1.1  
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### Filtrar pelo tipo "DIRECTOR"
 GET http://localhost:3000/user?type=DIRECTOR HTTP/1.1  
@@ -183,43 +206,53 @@ Authorization: Bearer {{login.response.body.token}}
 ### Filtrar pelo tipo "ADMIN"
 GET http://localhost:3000/user?type=ADMIN HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### Mostrar um único usuário
 GET http://localhost:3000/user/1 HTTP/1.1 
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### Listar usuários nascidos entre 1990 e 2000
 GET http://localhost:3000/user?birth_min=1990-01-01&birth_max=2000-12-31 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
-### Mostrar o usuário que eu quero editar
-PUT http://localhost:3000/user/1 HTTP/1.1
+###
+PUT http://localhost:3000/user/{{loginDirector.response.body.user.id}} HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{loginDirector.response.body.token}}
 
 {
-  "name": "Lucas",
-  "email": "lucas@email.com",
-  "birthDate": "2006-05-10T00:00:00.000Z"
+  "password": "novaSenha123"
+}
+
+### Mostrar o usuário que eu quero editar (DIRECTOR próprio perfil)
+PUT http://localhost:3000/user/{{loginDirector.response.body.user.id}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{loginDirector.response.body.token}}
+
+{
+  "name": "Vanessa Sales Editada",
+  "email": "vanssales@gmail.com",
+  "birthDate": "2006-05-10T00:00:00.000Z",
+  "password": "novaSenha123"
 }
 
 ### Deletar o usuário
 DELETE http://localhost:3000/user/1 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### Listar todos os usuários
 GET http://localhost:3000/user/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 ### Deletar o usuário (Somente Admin)
 DELETE http://localhost:3000/user/2 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{login.response.body.token}}
 
 
 ###########################################################################
@@ -344,4 +377,117 @@ Content-Type: application/json
   "type": "DIRECTOR",
   "status": "ATIVO"
 }
+
+
+###########################################################################
+### TESTES DE NORMALIZAÇÃO AUTOMÁTICA DE DADOS
+###########################################################################
+
+### TESTE 1: NORMALIZAÇÃO - type em minúsculo "admin" deve vir como "ADMIN"
+# @name testNormAdmin
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Teste Normalize Admin",
+  "cpf": "11144477735",
+  "email": "NormalizADMIN@test.com",
+  "password": "senha123",
+  "type": "admin",
+  "status": "ativo",
+  "birthDate": "1990-05-10T00:00:00.000Z"
+}
+
+### Verificar que type foi convertido para ADMIN
+GET http://localhost:3000/user/{{testNormAdmin.response.body.id}}
+Content-Type: application/json
+
+### TESTE 2: NORMALIZAÇÃO - type "Admin" (mixed case) deve vir como "ADMIN"
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Teste Mixed Case",
+  "cpf": "00000000191",
+  "email": "MixedCASE@test.com",
+  "password": "senha456",
+  "type": "AdMiN",
+  "status": "AtIvO"
+}
+
+### TESTE 3: NORMALIZAÇÃO - status "inativo" deve vir como "INATIVO"
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Teste Status Inativo",
+  "cpf": "11144477736",
+  "email": "inativo@test.com",
+  "password": "senha789",
+  "type": "DIRECTOR",
+  "status": "inativo"
+}
+
+### TESTE 4: NORMALIZAÇÃO - email "MAIUSCULO@TEST.COM" deve vir como "maiusculo@test.com"
+# @name testEmailNorm
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Email Uppercase",
+  "cpf": "22244477735",
+  "email": "UPPERCASE@TEST.COM",
+  "password": "senha999",
+  "type": "admin",
+  "status": "ativo"
+}
+
+### Verificar que email foi convertido para minúsculo
+GET http://localhost:3000/user/{{testEmailNorm.response.body.id}}
+Content-Type: application/json
+
+### TESTE 5: NORMALIZAÇÃO - EDIÇÃO com valores em lowercase
+# @name testEditNorm
+PUT http://localhost:3000/user/{{testNormAdmin.response.body.id}}
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "type": "DIRECTOR",
+  "status": "inativo",
+  "email": "NEWEMAIL@TEST.COM"
+}
+
+### Verificar que valores foram normalizados após edição
+GET http://localhost:3000/user/{{testNormAdmin.response.body.id}}
+Content-Type: application/json
+
+
+### TESTE 6: NORMALIZAÇÃO COMPLETA - Todos os campos
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Teste Completo",
+  "cpf": "33344477735",
+  "email": "TESTEEMAIL@DOMAIN.COM.BR",
+  "password": "senha555",
+  "type": "director",
+  "status": "INATIVO",
+  "birthDate": "1995-08-25T00:00:00.000Z"
+}
+
+### TESTE 7: Email com espaços NO INÍCIO/FIM (deve funcionar com trim implícito?)
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Email With Spaces",
+  "cpf": "44444477735",
+  "email": "  spaced@test.com  ",
+  "password": "senha666",
+  "type": "admin",
+  "status": "ativo"
+}
+
 
