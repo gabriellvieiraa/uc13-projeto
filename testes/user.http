@@ -1,5 +1,8 @@
 ### Login de usuário ADMIN
 # @name login
+
+@token = {{login.response.body.token}}
+
 POST http://localhost:3000/user/login HTTP/1.1
 Content-Type: application/json
 
@@ -29,7 +32,7 @@ Content-Type: application/json
   "cpf": "12345672200",
   "email": "gabi@test.com",
   "password": "1234567",
-  "type": "ADMIN",
+  "type": "DIRECTOR",
   "status": "ATIVO",
   "birthDate": "1995-05-10T00:00:00.000Z"
 }

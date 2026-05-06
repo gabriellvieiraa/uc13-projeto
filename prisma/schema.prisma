@@ -55,6 +55,7 @@ model Company {
   places        String
   fundaments    String
   methods       String
+  ranking       Int           @default(0)
 
   users         User[]       
   courses       Course[]    
@@ -92,7 +93,7 @@ model Course{
   description    String
   urlImg         String      @map("url_img") @default("")
   workload       Float?
-  ranking        Int
+  ranking        Int        @default(0)
   fieldOfStudy   String     @map("Field_of_study")
    
   categories     Category[]  @relation("category_course")

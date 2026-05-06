@@ -146,6 +146,11 @@ export async function showCompanie(req, res, _next) {
             return res.status(404).json({ error: `Empresa com ID ${id} não localizada.` });
         }
 
+        c = await prisma.company.update({
+            where: { id: c.id },
+            data: { ranking: { increment: 1 } }
+        });
+
         return res.status(200).json(c);
     } catch (error) {
         return res.status(500).json({ error: "Erro interno do servidor ao buscar detalhes da empresa." });
