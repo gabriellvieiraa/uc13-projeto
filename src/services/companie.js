@@ -39,7 +39,7 @@ function isValidCNPJ(cnpj) {
 }
 
 const createCompanySchema = z.object({
-    name: z.string().min(1, "O nome é obrigatório").trim().toUpperCase(),
+    name: z.string().trim().min(1, "O nome é obrigatório").regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/, "O nome não pode conter caracteres especiais ou números, apenas letras").toUpperCase(),
     cnpj: z.string().transform(v => v.replace(/[^\d]+/g, '')).refine(isValidCNPJ, { message: "CNPJ inválido. Verifique os dígitos numéricos." }),
     foundation: z.string()
         .datetime({ message: "A data de fundação deve estar no formato ISO-8601 (ex: 2023-01-01T00:00:00.000Z)" })
@@ -49,16 +49,16 @@ const createCompanySchema = z.object({
             const currentYear = new Date().getFullYear();
             return year >= 1500 && year <= currentYear && date <= new Date();
         }, { message: "A data inserida é incoerente (ano irreal) ou está no futuro." }),
-    places: z.string().min(1, "O local é obrigatório").trim().toUpperCase(),
-    fundaments: z.string().min(1, "Os fundamentos são obrigatórios").trim().toUpperCase(),
-    methods: z.string().min(1, "Os métodos são obrigatórios").trim().toUpperCase()
+    places: z.string().trim().min(1, "O local é obrigatório").toUpperCase(),
+    fundaments: z.string().trim().min(1, "Os fundamentos são obrigatórios").toUpperCase(),
+    methods: z.string().trim().min(1, "Os métodos são obrigatórios").toUpperCase()
 });
 
 const updateCompanySchema = z.object({
-    name: z.string().min(1, "O nome não pode ser vazio").trim().toUpperCase().optional(),
-    places: z.string().min(1, "O local não pode ser vazio").trim().toUpperCase().optional(),
-    fundaments: z.string().min(1, "Os fundamentos não podem ser vazios").trim().toUpperCase().optional(),
-    methods: z.string().min(1, "Os métodos não podem ser vazios").trim().toUpperCase().optional()
+    name: z.string().trim().min(1, "O nome não pode ser vazio").regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/, "O nome não pode conter caracteres especiais ou números, apenas letras").toUpperCase().optional(),
+    places: z.string().trim().min(1, "O local não pode ser vazio").toUpperCase().optional(),
+    fundaments: z.string().trim().min(1, "Os fundamentos não podem ser vazios").toUpperCase().optional(),
+    methods: z.string().trim().min(1, "Os métodos não podem ser vazios").toUpperCase().optional()
 }).refine(data => Object.keys(data).length > 0, {
     message: "Nenhum campo válido para atualização foi fornecido. O corpo deve conter alterações."
 });

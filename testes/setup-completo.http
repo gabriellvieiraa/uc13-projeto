@@ -1,0 +1,394 @@
+###########################################################################
+### SETUP COMPLETO: USUÁRIOS -> EMPRESAS -> CATEGORIAS -> CURSOS
+###########################################################################
+
+###########################################################################
+### BLOCO 1: CRIANDO USUÁRIOS
+###########################################################################
+
+### Criar ADMIN
+# @name adminUser
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Gabriel Admin",
+  "cpf": "11144477735",
+  "email": "admin@empresa.com",
+  "password": "admin123456",
+  "type": "ADMIN",
+  "status": "ATIVO",
+  "birthDate": "1990-03-15T00:00:00.000Z"
+}
+
+### Criar DIRECTOR 1
+# @name directorUser1
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Vanessa Director",
+  "cpf": "00000000191",
+  "email": "director1@empresa.com",
+  "password": "director123456",
+  "type": "DIRECTOR",
+  "status": "ATIVO",
+  "birthDate": "1992-07-20T00:00:00.000Z"
+}
+
+### Criar DIRECTOR 2
+# @name directorUser2
+POST http://localhost:3000/user/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Carlos Director",
+  "cpf": "11111111171",
+  "email": "director2@empresa.com",
+  "password": "director123456",
+  "type": "DIRECTOR",
+  "status": "ATIVO",
+  "birthDate": "1988-11-10T00:00:00.000Z"
+}
+
+###########################################################################
+### BLOCO 2: LOGIN PARA OBTER TOKEN (usar usuario ADMIN)
+###########################################################################
+
+### Login ADMIN (para criar empresas)
+# @name loginAdmin
+POST http://localhost:3000/user/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "admin@empresa.com",
+  "password": "admin123456"
+}
+
+###########################################################################
+### BLOCO 3: CRIANDO EMPRESAS
+###########################################################################
+
+### Criar Empresa 1: Tech Solutions
+# @name empresa1
+POST http://localhost:3000/companie HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Tech Solutions Brasil",
+  "cnpj": "12345678000101",
+  "foundation": "2015-01-15T00:00:00.000Z",
+  "places": "São Paulo, Rio de Janeiro, Belo Horizonte",
+  "fundaments": "Inovação, Tecnologia e Qualidade",
+  "methods": "Metodologia Ágil, Scrum, DevOps"
+}
+
+### Criar Empresa 2: Saúde Plus
+# @name empresa2
+POST http://localhost:3000/companie HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Saúde Plus Clínicas",
+  "cnpj": "98765432000102",
+  "foundation": "2010-06-20T00:00:00.000Z",
+  "places": "São Paulo, Santos, Campinas",
+  "fundaments": "Excelência em Saúde, Bem-estar do Paciente",
+  "methods": "Protocolos Internacionais, Medicina Preventiva"
+}
+
+### Criar Empresa 3: Gestão Empresarial
+# @name empresa3
+POST http://localhost:3000/companie HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Gestão Pro Consultoria",
+  "cnpj": "55555555000103",
+  "foundation": "2018-03-10T00:00:00.000Z",
+  "places": "São Paulo, Brasília, Curitiba",
+  "fundaments": "Consultoria Estratégica, Gestão Empresarial",
+  "methods": "Consultoria Executiva, Treinamento de Equipes"
+}
+
+###########################################################################
+### BLOCO 4: ATUALIZAR DIRECTORS COM SUAS EMPRESAS
+###########################################################################
+
+### Vincular Director 1 à Empresa 1 (Tech Solutions)
+PUT http://localhost:3000/user/{{adminUser.response.body.id}}
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "companyId": {{empresa1.response.body.id}}
+}
+
+### Vincular Director 2 à Empresa 2 (Saúde Plus)
+PUT http://localhost:3000/user/{{directorUser1.response.body.id}}
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "companyId": {{empresa2.response.body.id}}
+}
+
+###########################################################################
+### BLOCO 5: CRIAR CATEGORIAS
+###########################################################################
+
+### Criar Categoria: Tecnologia e Programação
+# @name catTecnologia
+POST http://localhost:3000/categorie HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Tecnologia e Programação",
+  "description": "Cursos de desenvolvimento, sistemas, redes, cloud, DevOps e tecnologia em geral"
+}
+
+### Criar Categoria: Saúde e Bem-estar
+# @name catSaude
+POST http://localhost:3000/categorie HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Saúde e Bem-estar",
+  "description": "Cursos de fisioterapia, enfermagem, reabilitação e bem-estar"
+}
+
+### Criar Categoria: Negócios e Administração
+# @name catNegocios
+POST http://localhost:3000/categorie HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Negócios e Administração",
+  "description": "Cursos de gestão empresarial, liderança, empreendedorismo e negócios"
+}
+
+### Criar Categoria: Soft Skills
+# @name catSoftSkills
+POST http://localhost:3000/categorie HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Soft Skills",
+  "description": "Comunicação, liderança, inteligência emocional, trabalho em equipe"
+}
+
+###########################################################################
+### BLOCO 6: CRIAR CURSOS (Empresa 1: Tech Solutions)
+###########################################################################
+
+### Curso 1: Desenvolvedor Web Full Stack (Tech)
+# @name curso1
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Desenvolvedor Web Full Stack",
+  "description": "Curso completo de desenvolvimento web com HTML, CSS, JavaScript, React, Node.js, Express, MongoDB e PostgreSQL",
+  "workload": 2400,
+  "ranking": 10,
+  "urlImg": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97",
+  "fieldOfStudy": "Tecnologia",
+  "companyId": {{empresa1.response.body.id}},
+  "categoryIds": [{{catTecnologia.response.body.id}}]
+}
+
+### Curso 2: Python para Data Science (Tech)
+# @name curso2
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Python para Data Science e Machine Learning",
+  "description": "Aprenda Python, análise de dados, machine learning, pandas, scikit-learn, TensorFlow",
+  "workload": 2000,
+  "ranking": 9,
+  "urlImg": "https://images.unsplash.com/photo-1526374965328-7f5ae4e8b912",
+  "fieldOfStudy": "Tecnologia",
+  "companyId": {{empresa1.response.body.id}},
+  "categoryIds": [{{catTecnologia.response.body.id}}]
+}
+
+### Curso 3: DevOps e Cloud (Tech)
+# @name curso3
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "DevOps e Arquitetura Cloud",
+  "description": "Domine Docker, Kubernetes, CI/CD, AWS, Azure, Infrastructure as Code",
+  "workload": 1800,
+  "ranking": 9,
+  "urlImg": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64",
+  "fieldOfStudy": "Tecnologia",
+  "companyId": {{empresa1.response.body.id}},
+  "categoryIds": [{{catTecnologia.response.body.id}}, {{catSoftSkills.response.body.id}}]
+}
+
+###########################################################################
+### BLOCO 7: CRIAR CURSOS (Empresa 2: Saúde Plus)
+###########################################################################
+
+### Curso 4: Técnico em Fisioterapia (Saúde)
+# @name curso4
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Técnico em Fisioterapia",
+  "description": "Curso técnico completo em fisioterapia, exercícios terapêuticos, reabilitação física e cinesioterapia",
+  "workload": 1800,
+  "ranking": 9,
+  "urlImg": "https://images.unsplash.com/photo-1576091160550-2173dba999ef",
+  "fieldOfStudy": "Saúde",
+  "companyId": {{empresa2.response.body.id}},
+  "categoryIds": [{{catSaude.response.body.id}}]
+}
+
+### Curso 5: Técnico em Enfermagem (Saúde)
+# @name curso5
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Técnico em Enfermagem",
+  "description": "Formação completa em enfermagem, procedimentos clínicos, ética profissional e gestão hospitalar",
+  "workload": 2000,
+  "ranking": 10,
+  "urlImg": "https://images.unsplash.com/photo-1576091160550-2173dba999ef",
+  "fieldOfStudy": "Saúde",
+  "companyId": {{empresa2.response.body.id}},
+  "categoryIds": [{{catSaude.response.body.id}}, {{catNegocios.response.body.id}}]
+}
+
+### Curso 6: Primeiro Socorro e Segurança (Saúde)
+# @name curso6
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Curso de Primeiro Socorro",
+  "description": "Capacitação em primeiros socorros, RCP, atendimento de emergência e prevenção de acidentes",
+  "workload": 40,
+  "ranking": 8,
+  "urlImg": "https://images.unsplash.com/photo-1538108149393-fbbd81895907",
+  "fieldOfStudy": "Saúde",
+  "companyId": {{empresa2.response.body.id}},
+  "categoryIds": [{{catSaude.response.body.id}}]
+}
+
+###########################################################################
+### BLOCO 8: CRIAR CURSOS (Empresa 3: Gestão Empresarial)
+###########################################################################
+
+### Curso 7: Gestor de Empresas (Negócios)
+# @name curso7
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Gestor de Empresas",
+  "description": "Formação completa em gestão empresarial, planejamento estratégico, liderança e administração",
+  "workload": 1600,
+  "ranking": 9,
+  "urlImg": "https://images.unsplash.com/photo-1552664730-d307ca884978",
+  "fieldOfStudy": "Negócios",
+  "companyId": {{empresa3.response.body.id}},
+  "categoryIds": [{{catNegocios.response.body.id}}, {{catSoftSkills.response.body.id}}]
+}
+
+### Curso 8: Liderança e Empreendedorismo (Negócios)
+# @name curso8
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Liderança e Empreendedorismo",
+  "description": "Desenvolva habilidades de liderança, crie seu próprio negócio, inovação e gestão de startups",
+  "workload": 1200,
+  "ranking": 9,
+  "urlImg": "https://images.unsplash.com/photo-1552664730-d307ca884978",
+  "fieldOfStudy": "Negócios",
+  "companyId": {{empresa3.response.body.id}},
+  "categoryIds": [{{catNegocios.response.body.id}}, {{catSoftSkills.response.body.id}}]
+}
+
+### Curso 9: Comunicação Eficaz (Soft Skills)
+# @name curso9
+POST http://localhost:3000/course HTTP/1.1
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+{
+  "name": "Comunicação Eficaz e Oratória",
+  "description": "Melhore sua comunicação verbal e não-verbal, apresentações profissionais e técnicas de oratória",
+  "workload": 800,
+  "ranking": 8,
+  "urlImg": "https://images.unsplash.com/photo-1552664730-d307ca884978",
+  "fieldOfStudy": "Negócios",
+  "companyId": {{empresa3.response.body.id}},
+  "categoryIds": [{{catSoftSkills.response.body.id}}]
+}
+
+###########################################################################
+### BLOCO 9: VERIFICAÇÕES FINAIS
+###########################################################################
+
+### Listar todos os usuários criados
+GET http://localhost:3000/user/
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+### Listar todas as empresas
+GET http://localhost:3000/companie
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+
+### Listar todas as categorias (com cursos inclusos)
+GET http://localhost:3000/categorie
+Content-Type: application/json
+
+### Listar todos os cursos (com categorias inclusos)
+GET http://localhost:3000/course
+Content-Type: application/json
+
+### Verificar Categoria Tecnologia e seus cursos
+GET http://localhost:3000/categorie/{{catTecnologia.response.body.id}}
+Content-Type: application/json
+
+### Verificar Categoria Saúde e seus cursos
+GET http://localhost:3000/categorie/{{catSaude.response.body.id}}
+Content-Type: application/json
+
+### Verificar Categoria Negócios e seus cursos
+GET http://localhost:3000/categorie/{{catNegocios.response.body.id}}
+Content-Type: application/json
+
+### Verificar Curso 1 e suas categorias
+GET http://localhost:3000/course/{{curso1.response.body.id}}
+Content-Type: application/json
+
+### Verificar Empresa 1 e seus cursos
+GET http://localhost:3000/companie/{{empresa1.response.body.id}}
+Authorization: Bearer {{loginAdmin.response.body.token}}
+Content-Type: application/json
+

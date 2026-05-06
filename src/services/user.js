@@ -80,16 +80,28 @@ const createUserSchema = z.object({
   email: z.string({ 
     required_error: "O preenchimento do e-mail é obrigatório.",
     invalid_type_error: "O formato do e-mail fornecido é inválido."
-  }).email({ message: "O e-mail informado não é válido. Verifique se digitou corretamente (exemplo: nome@dominio.com)." })
-    .max(255, { message: "O e-mail inserido excedeu o limite de tamanho aceito pelo sistema." }),
+  })
+  .email({ message: "O e-mail informado não é válido. Verifique se digitou corretamente (exemplo: nome@dominio.com)." })
+  .max(255, { message: "O e-mail inserido excedeu o limite de tamanho aceito pelo sistema." })
+  .transform(val => val.toLowerCase()),
   
-  type: z.enum(["ADMIN", "DIRECTOR"], { 
-    errorMap: () => ({ message: "O cargo informado é inválido. Selecione uma opção válida: ADMIN ou DIRECTOR." })
-  }).optional(),
+  type: z.string({ 
+    invalid_type_error: "O cargo deve ser um texto."
+  })
+  .transform(val => val.toUpperCase())
+  .pipe(z.enum(["ADMIN", "DIRECTOR"], { 
+    errorMap: () => ({ message: "O cargo informado é inválido. Selecione ADMIN ou DIRECTOR (qualquer maiúscula/minúscula será aceita)." })
+  }))
+  .optional(),
   
-  status: z.enum(["ATIVO", "INATIVO"], {
-    errorMap: () => ({ message: "O status informado é inválido. Selecione ATIVO ou INATIVO." })
-  }).optional(),
+  status: z.string({
+    invalid_type_error: "O status deve ser um texto."
+  })
+  .transform(val => val.toUpperCase())
+  .pipe(z.enum(["ATIVO", "INATIVO"], {
+    errorMap: () => ({ message: "O status informado é inválido. Selecione ATIVO ou INATIVO (qualquer maiúscula/minúscula será aceita)." })
+  }))
+  .optional(),
   
   birthDate: z.coerce.date({ 
     errorMap: () => ({ message: "A data de nascimento informada não está num longo formato ou é inválida (exemplo aceito: 2005-05-10T00:00:00.000Z)." })
@@ -209,17 +221,25 @@ const editUserSchema = z.object({
     .regex(/^[a-zA-ZÀ-ÿ\s]+$/, { message: "O nome não deve possuir números ou traços especiais. Utilize apenas letras e espaços." })
     .optional(),
   
-  email: z.string({ invalid_type_error: "O e-mail deve ser estar formato textual." })
+  email: z.string({ invalid_type_error: "O e-mail deve estar em formato textual." })
     .email({ message: "O e-mail para atualização parece estar com defeito. (Exemplo aceito: contato@dominio.com)." })
-    .max(255, { message: "O tamanho limite aceito para este e-mail é de 255 letras." }).optional(),
+    .max(255, { message: "O tamanho limite aceito para este e-mail é de 255 letras." })
+    .transform(val => val.toLowerCase())
+    .optional(),
     
-  type: z.enum(["ADMIN", "DIRECTOR"], { 
-    errorMap: () => ({ message: "O cargo escolhido na edição é inexistente. Só possuimos os cargos ADMIN ou DIRECTOR." })
-  }).optional(),
+  type: z.string({ invalid_type_error: "O cargo deve ser um texto." })
+    .transform(val => val.toUpperCase())
+    .pipe(z.enum(["ADMIN", "DIRECTOR"], { 
+      errorMap: () => ({ message: "O cargo escolhido na edição é inexistente. Só possuimos ADMIN ou DIRECTOR (qualquer maiúscula/minúscula será aceita)." })
+    }))
+    .optional(),
   
-  status: z.enum(["ATIVO", "INATIVO"], {
-    errorMap: () => ({ message: "As opções para a alteração de status são restritas para ATIVO ou INATIVO." })
-  }).optional(),
+  status: z.string({ invalid_type_error: "O status deve ser um texto." })
+    .transform(val => val.toUpperCase())
+    .pipe(z.enum(["ATIVO", "INATIVO"], {
+      errorMap: () => ({ message: "As opções de status são ATIVO ou INATIVO (qualquer maiúscula/minúscula será aceita)." })
+    }))
+    .optional(),
   
   birthDate: z.coerce.date({ 
     errorMap: () => ({ message: "Padrão de edição para data não suportado. Verifique os dados e envie por exemplo 2005-05-10T00:00:00.000Z." })
@@ -229,7 +249,13 @@ const editUserSchema = z.object({
 
   cpf: z.string({ invalid_type_error: "O formato do CPF é inválido." })
   .length(11, { message: "O CPF deve conter exatamente 11 dígitos numéricos." })
-  .regex(/^\d+$/, { message: "O CPF deve conter apenas números, sem pontos ou traços." }).optional()
+  .regex(/^\d+$/, { message: "O CPF deve conter apenas números, sem pontos ou traços." })
+  .refine(isValidCPF, { message: "O CPF informado é inválido. Verifique os dígitos verificadores." })
+  .optional(),
+
+  password: z.string({ invalid_type_error: "A senha deve ser um texto." })
+    .min(6, { message: "A senha deve ter no mínimo 6 caracteres." })
+    .optional()
 
 }).strict({ message: "Há parâmetros inválidos sendo enviados." });
 
@@ -237,13 +263,16 @@ export async function editUser(req, res, _next)
 {
   try {
     const user = req.logeded;
-    if (!user || (user.type !== 'ADMIN' && user.type !== 'DIRECTOR')) {
-      return res.status(403).json({ error: "Acesso Negado: Apenas Administradores e Diretores podem editar usuários." });
-    }
-
     let id = Number(req.params.id);
     if (isNaN(id)) {
       return res.status(400).json({ error: "O número de identificação de usuário que você forneceu não é válido." });
+    }
+
+    // Permite edição própria ou se for ADMIN/DIRECTOR
+    const isOwnProfile = id === user.id;
+    const isAdminOrDirector = user.type === 'ADMIN' || user.type === 'DIRECTOR';
+    if (!isOwnProfile && !isAdminOrDirector) {
+      return res.status(403).json({ error: "Acesso Negado: Você só pode editar seu próprio perfil ou ser Administrador/Diretor para editar outros." });
     }
 
     const parsed = editUserSchema.safeParse(req.body);
@@ -262,25 +291,35 @@ export async function editUser(req, res, _next)
         }
     }
 
-    let u = await prisma.user.findFirst({ where: { id: id } });
+    const existingUser = await prisma.user.findFirst({ where: { id: id } });
 
-    if(!u){
+    if(!existingUser){
         return res.status(404).json({ error: "O usuário solicitado para modificação não pôde ser encontrado." });
     }
 
-    u = attachSave(u, 'user');
+    const updateData = {};
+    if(data.name !== undefined) updateData.name = data.name;
+    if(data.email !== undefined) updateData.email = data.email;
+    if(data.birthDate !== undefined) updateData.birthDate = data.birthDate;
+    if(data.type !== undefined) updateData.type = data.type;
+    if(data.status !== undefined) updateData.status = data.status;
+    if(data.companyId !== undefined) updateData.companyId = data.companyId;
+    if(data.cpf !== undefined) updateData.cpf = data.cpf;
+    if(data.password !== undefined) {
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(data.password, salt);
+    }
 
-    if(data.name !== undefined) u.name = data.name;
-    if(data.email !== undefined) u.email = data.email;
-    if(data.birthDate !== undefined) u.birthDate = data.birthDate;
-    if(data.type !== undefined) u.type = data.type;
-    if(data.status !== undefined) u.status = data.status;
-    if(data.companyId !== undefined) u.companyId = data.companyId;
-    if(data.cpf !== undefined) u.cpf = data.cpf;
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ error: "Nenhum campo válido foi enviado para atualização." });
+    }
 
-    await u.save();
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: updateData
+    });
 
-    return res.status(202).json(u);
+    return res.status(202).json(updatedUser);
   } catch (error) {
     if (error.code === 'P2002') {
       return res.status(409).json({ error: "Este endereço de e-mail já está sendo utilizado por um cliente no sistema." });
