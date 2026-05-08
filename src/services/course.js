@@ -15,7 +15,7 @@ const courseSchema = z.object({
     description: z.string().min(10, "A descrição deve ter pelo menos 10 caracteres"),
     urlImg: z.string().url("A URL da imagem fornecida não é um formato válido"),
     workload: z.number().positive("A carga horária deve ser positiva").optional(),
-    ranking: z.number().int().min(1),
+    ranking: z.number().int().nonnegative().optional(),
     fieldOfStudy: z.string().min(2, "A área de estudo deve ter pelo menos 2 caracteres"),
     companyId: z.number().int().positive().optional(),
     categoryIds: z.array(z.number().int().positive()).optional()
@@ -129,6 +129,12 @@ export async function showCourse(req, res, _next) {
         if (!c) {
             return res.status(404).json({ error: "Não encontrei o curso especificado (ID: " + id + ")" });
         }
+
+        c = await prisma.course.update({
+            where: { id: c.id },
+            data: { ranking: { increment: 1 } },
+            include: { categories: true }
+        });
 
         return res.status(200).json(c);
     } catch (error) {

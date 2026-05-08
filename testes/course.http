@@ -18,7 +18,6 @@ content-type: application/json
     "name":"Técnico em batatinha",
     "description":"Curso voltado para reabilitação física",
     "workload": 1800,
-    "ranking": 8, 
     "urlImg":"https://images.unsplash.com/photo-1584515933487-779824d29309",
     "fieldOfStudy":"Saúde",
     "companyId": 1,
@@ -36,7 +35,6 @@ content-type: application/json
     "name":"Tecnico em Loistica",
     "description" : "O curso Técnico ",
     "workload": 2000,
-    "ranking": 6, 
     "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
     "fieldOfStudy":"Tecnologia"
     
@@ -51,7 +49,6 @@ content-type: application/json
     "name":"Técnico em Administração",
     "description" : "Curso focado em gestão empresarial, finanças e rotinas administrativas.",
     "workload": 1600,
-    "ranking": 7, 
     "urlImg":"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
     "fieldOfStudy":"Negócios"
 }
@@ -66,7 +63,6 @@ content-type: application/json
     "name":"Tecnico em ADM",
     "description" : "O curso Técnico em ADM ",
     "workload": 2000,
-    "ranking": 6, 
     "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
     "fieldOfStudy":"Administração"
     
@@ -85,7 +81,6 @@ content-type: application/json
     "name":"Tecnico em ADM",
     "description" : "O curso Técnico em ADM ",
     "workload": 2000,
-    "ranking": 6, 
     "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
     "fieldOfStudy":"Administração",
     "companyId":1
@@ -96,14 +91,14 @@ content-type: application/json
 # chave=valor
 
 # Names
-GET https://uc13-projeto-2xiu.onrender.com/course?name=inf HTTP/1.1
+GET https://uc13-projeto-2xiu.onrender.com/course/1 HTTP/1.1
 content-type: application/json
 
-# Description
+### Description
 GET https://uc13-projeto-2xiu.onrender.com/course?description=Inf HTTP/1.1
 
 
-# Workload
+### Workload
 GET https://uc13-projeto-2xiu.onrender.com/course?workload_max=2000  HTTP/1.1
 content-type: application/json
 
