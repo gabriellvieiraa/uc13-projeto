@@ -153,6 +153,7 @@ export async function showCompanie(req, res, _next) {
 
         return res.status(200).json(c);
     } catch (error) {
+        console.error("Erro no showCompanie:", error);
         return res.status(500).json({ error: "Erro interno do servidor ao buscar detalhes da empresa." });
     }
 }
