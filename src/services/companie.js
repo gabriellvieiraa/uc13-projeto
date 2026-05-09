@@ -49,9 +49,10 @@ const createCompanySchema = z.object({
             const currentYear = new Date().getFullYear();
             return year >= 1500 && year <= currentYear && date <= new Date();
         }, { message: "A data inserida é incoerente (ano irreal) ou está no futuro." }),
-    places: z.string().trim().min(1, "O local é obrigatório").toUpperCase(),
-    fundaments: z.string().trim().min(1, "Os fundamentos são obrigatórios").toUpperCase(),
-    methods: z.string().trim().min(1, "Os métodos são obrigatórios").toUpperCase()
+    places: z.string({ required_error: "O local é obrigatório", invalid_type_error: "O local deve ser um texto" }).trim().min(1, "O local é obrigatório").toUpperCase(),
+    fundaments: z.string({ required_error: "Os fundamentos são obrigatórios", invalid_type_error: "Os fundamentos devem ser um texto" }).trim().min(1, "Os fundamentos são obrigatórios").toUpperCase(),
+    methods: z.string({ required_error: "Os métodos são obrigatórios", invalid_type_error: "Os métodos devem ser um texto" }).trim().min(1, "Os métodos são obrigatórios").toUpperCase(),
+    ownerId: z.number({ invalid_type_error: "O ID do dono deve ser um número" }).int("O ID do dono deve ser um número inteiro").positive("O ID do dono deve ser positivo").optional()
 });
 
 const updateCompanySchema = z.object({
@@ -90,8 +91,12 @@ export async function createCompanie(req, res, _next) {
         }
 
 
-        const ownerId = req.logeded.id;
-        data.ownerId = ownerId;
+        if (user.type === 'DIRECTOR') {
+            data.ownerId = user.id;
+        } else if (user.type === 'ADMIN') {
+            // Permite o ADMIN definir o ownerId pelo body, caso contrário, fica null
+            data.ownerId = data.ownerId !== undefined ? data.ownerId : null;
+        }
 
         let u = await prisma.company.create({ data });
 
