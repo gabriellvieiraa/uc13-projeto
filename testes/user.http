@@ -32,7 +32,7 @@ Content-Type: application/json
 
 {
   "email": "vanessa@test.com",
-  "password": "novaSenha123456"
+  "password": "1234567"
 }
 
 ### Trocar senha própria (DIRECTOR)
@@ -69,9 +69,9 @@ Authorization: Bearer {{login.response.body.token}}
 {
   "name": "Vanessa Sales",
   "cpf": "29508486805",
-  "email": "vanessa@test.com",
+  "email": "VANESSA@tEST.com",
   "password": "1234567",
-  "type": "DIRECTOR",
+  "type": "milena",
   "status": "ATIVO",
   "birthDate": "1995-05-10T00:00:00.000Z"
 }
