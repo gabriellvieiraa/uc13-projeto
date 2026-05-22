@@ -51,13 +51,13 @@ Content-Type: application/json
 
 
 {
-  "name": "Gabriel Vieira ",
-  "cpf": "29508486805",
-  "email": "gabi@test.com",
-  "password": "1234567",
-  "type": "DIRECTOR",
+  "name": "Neymar Jr ",
+  "cpf": "87075602063",
+  "email": "njr@test.com",
+  "password": "exa vem",
+  "type": "ADMIN",
   "status": "ATIVO",
-  "birthDate": "1995-05-10T00:00:00.000Z"
+  "birthDate": "1996-02-10T00:00:00.000Z"
 }
 
 
