@@ -53,6 +53,9 @@ export const optionalAuth = (req, res, next) => {
 
 // Middleware para verificar se pode criar usuário
 export const canCreateUser = (req, res, next) => {
+    // Verifica a intenção de criar um Admin
+    const isCreatingAdmin = req.body && typeof req.body.type === 'string' && req.body.type.toUpperCase() === 'ADMIN';
+
     // Se o usuário já está logado
     if (req.logeded) {
         if (req.logeded.type === 'ADMIN') {
@@ -65,5 +68,9 @@ export const canCreateUser = (req, res, next) => {
     }
     
     // Se não está logado, é um novo usuário se registrando (criando a si mesmo)
+    if (isCreatingAdmin) {
+        return res.status(403).json({ error: 'Acesso negado. Apenas um Administrador autenticado tem permissão para criar novos perfis de Administrador.' });
+    }
+
     return next();
 };

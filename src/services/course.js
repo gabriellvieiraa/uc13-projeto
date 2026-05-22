@@ -17,8 +17,9 @@ const courseSchema = z.object({
     workload: z.number().positive("A carga horária deve ser positiva").optional(),
     ranking: z.number().int().nonnegative().optional(),
     fieldOfStudy: z.string().min(2, "A área de estudo deve ter pelo menos 2 caracteres"),
-    companyId: z.number().int().positive().optional(),
-    categoryIds: z.array(z.number().int().positive()).optional()
+    companyId: z.number({ invalid_type_error: "O ID da empresa deve ser um número" }).int("O ID da empresa deve ser um número inteiro").positive("O ID da empresa deve ser positivo").optional(),
+    categoryIds: z.array(z.number({ invalid_type_error: "Cada ID de categoria deve ser um número" }).int("Cada ID de categoria deve ser um número inteiro").positive("Cada ID de categoria deve ser positivo"), { invalid_type_error: "As categorias devem ser uma lista de números" }).optional(),
+    ownerId: z.number({ invalid_type_error: "O ID do dono deve ser um número" }).int("O ID do dono deve ser um número inteiro").positive("O ID do dono deve ser positivo").optional()
 });
 
 const courseEditSchema = z.object({
@@ -59,9 +60,15 @@ export async function createCourse(req, res, _next) {
 
         const { categoryIds, ...coursePayload } = data;
         const createData = {
-            ...coursePayload,
-            ownerId: user.id
+            ...coursePayload
         };
+
+        if (user.type === 'DIRECTOR') {
+            createData.ownerId = user.id;
+        } else if (user.type === 'ADMIN') {
+            // Permite o ADMIN definir o ownerId pelo body, caso contrário, fica null
+            createData.ownerId = data.ownerId !== undefined ? data.ownerId : null;
+        }
 
         if (categoryIds && categoryIds.length > 0) {
             createData.categories = {
