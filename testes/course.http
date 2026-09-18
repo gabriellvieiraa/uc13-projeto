@@ -1,16 +1,16 @@
 ### Login de usuário
 # @name login
-POST http://localhost:3000/user/login HTTP/1.1
+POST https://uc13-projeto.onrender.com/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "vanessa@test.com",
-  "password": "1234567"
+   "email": "gabi@test.com",
+  "password": "test123"
 }
 
 
 ###
-POST http://localhost:3000/course HTTP/1.1
+POST https://uc13-projeto.onrender.com/course HTTP/1.1
 Authorization: Bearer {{login.response.body.token}}
 content-type: application/json
 
@@ -27,7 +27,7 @@ content-type: application/json
 
 
 ### criando um curso
-POST http://localhost:3000/course HTTP/1.1
+POST https://uc13-projeto.onrender.com/course HTTP/1.1
 Authorization: Bearer {{login.response.body.token}}
 content-type: application/json
 
@@ -41,7 +41,7 @@ content-type: application/json
 }
 
 ### criando um curso Teste Informática
-POST http://localhost:3000/course HTTP/1.1
+POST https://uc13-projeto.onrender.com/course HTTP/1.1
 Authorization: Bearer {{login.response.body.token}}
 content-type: application/json
 
@@ -55,7 +55,7 @@ content-type: application/json
 
 
 ### criando um curso Teste Diretor
-POST http://localhost:3000/course HTTP/1.1
+POST https://uc13-projeto.onrender.com/course HTTP/1.1
 Authorization: Bearer {{login.response.body.token}}
 content-type: application/json
 
@@ -73,7 +73,7 @@ content-type: application/json
 
 
 ### criando um curso Teste ADM
-POST http://localhost:3000/course HTTP/1.1
+POST https://uc13-projeto.onrender.com/course HTTP/1.1
 Authorization: Bearer {{login.response.body.token}}
 content-type: application/json
 
@@ -83,7 +83,7 @@ content-type: application/json
     "workload": 2000,
     "urlImg":"https://leschefsacademia.com.br/upload/09092020124641.png",
     "fieldOfStudy":"Administração",
-    "companyId":1
+   
     
 }
 
@@ -108,7 +108,7 @@ content-type: application/json
 
 
 ### listar todos o curso
-GET http://localhost:3000/course HTTP/1.1
+GET https://uc13-projeto.onrender.com/course/2 HTTP/1.1
 content-type: application/json
 
 
@@ -132,7 +132,7 @@ content-type: application/json
 
 ### Realiza uma mudança;
 
-PUT https://uc13-projeto-2xiu.onrender.com/course/3 HTTP/1.1
+PUT https://uc13-projeto-2xiu.onrender.com/course/5 HTTP/1.1
 content-type : application/json
 
 {
@@ -141,13 +141,15 @@ content-type : application/json
 }
 ### Editando o curso;
 
-PUT http://localhost:3000/course/1 HTTP/1.1
+PUT https://uc13-projeto.onrender.com/course/2 HTTP/1.1
 content-type : application/json
+Authorization: Bearer {{login.response.body.token}}
 
 {
-  "name":"Tecnico em Administração",
-  "description" : "O curso Técnico em Administração prepara profissionais para atuar em diversas áreas da administração"
+  "name":"T4cnicuo em batatinha",
+  "workload":0
 }
+
 
 ####
 PUT https://uc13-projeto-2xiu.onrender.com/course/1 HTTP/1.1

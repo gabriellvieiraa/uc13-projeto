@@ -1,24 +1,24 @@
 ### [ATENÇÃO] 1. FAÇA O LOGIN PRIMEIRO PARA PEGAR O SEU TOKEN
 # @name login
-POST http://localhost:3000/user/login HTTP/1.1
+POST https://uc13-projeto.onrender.com/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "vanessa@test.com",
-  "password": "1234567"
+    "email": "gabi@test.com",
+  "password": "test123"
 }
 
 ### -----------------------------------------------------
 
 ### [LOCAL] Criando companhia completa (Sucesso)
-POST http://localhost:3000/companie HTTP/1.1
+POST https://uc13-projeto.onrender.com/companie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
 {
-    "name": "TESTE LOCAL LTDA",          
-    "cnpj": "03.709.814/0051-57",           
-    "foundation": "1970-05-12T03:00:00.000Z",       
+    "name": "Teste Escola",          
+    "cnpj": "46.599.464/0001-67",           
+    "foundation": "1970-05-01T00:00:00.000Z",       
     "places": "RUA TESTE 123",      
     "fundaments": "Estudos Locais",    
     "methods": "Ensino Superior"         
@@ -26,7 +26,7 @@ Authorization: Bearer {{login.response.body.token}}
 
 
 ### [LOCAL] Criando companhia completa (Sucesso)
-POST http://localhost:3000/companie HTTP/1.1
+POST https://uc13-projeto.onrender.com/companie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
@@ -54,7 +54,7 @@ Authorization: Bearer {{login.response.body.token}}
 }
 
 ### TESTE DE ERRO 1: Criando companhia com NOME VAZIO
-POST http://localhost:3000/companie HTTP/1.1
+POST https://uc13-projeto.onrender.com/companie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
@@ -68,7 +68,7 @@ Authorization: Bearer {{login.response.body.token}}
 }
 
 ### TESTE DE ERRO 2: Criando companhia com CNPJ INVÁLIDO
-POST http://localhost:3000/companie HTTP/1.1
+POST https://uc13-projeto.onrender.com/companie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
@@ -82,7 +82,7 @@ Authorization: Bearer {{login.response.body.token}}
 }
 
 ### TESTE DE ERRO 3: Criando companhia com DATA DE FUNDAÇÃO NO FUTURO
-POST http://localhost:3000/companie HTTP/1.1
+POST https://uc13-projeto.onrender.com/companie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
@@ -96,7 +96,7 @@ Authorization: Bearer {{login.response.body.token}}
 }
 
 ### TESTE DE ERRO 4: Criando companhia FALTANDO OBRIGATÓRIOS (Sem métodos)
-POST http://localhost:3000/companie HTTP/1.1
+POST https://uc13-projeto.onrender.com/companie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
@@ -109,7 +109,7 @@ Authorization: Bearer {{login.response.body.token}}
 }
 
 ### [LOCAL] Listar todas as companhias (Rotas GET costumam ser públicas!)
-GET http://localhost:3000/companie HTTP/1.1
+GET https://uc13-projeto.onrender.com/companie/3 HTTP/1.1
 content-type: application/json
 
 ### [PRODUCAO] Listar todas as companhias
@@ -117,34 +117,33 @@ GET https://uc13-projeto-2xiu.onrender.com/companie HTTP/1.1
 content-type: application/json
 
 ### Filtrar pelo atributo nome
-GET http://localhost:3000/companie?name=SENAC HTTP/1.1
+GET https://uc13-projeto.onrender.com/companie?name=SENAC HTTP/1.1
 content-type: application/json
 
 ### Filtrar pelo CNPJ
-GET http://localhost:3000/companie?cnpj=03709814005157 HTTP/1.1
+GET https://uc13-projeto.onrender.com/companie?cnpj=03709814005157 HTTP/1.1
 content-type: application/json
 
 ### Filtrar por lugares (places)
-GET http://localhost:3000/companie?places=EPISCOPAL HTTP/1.1
+GET https://uc13-projeto.onrender.com/companie?places=EPISCOPAL HTTP/1.1
 content-type: application/json
 
 ### Mostrar uma única companhia (por ID)
-GET http://localhost:3000/companie/1 HTTP/1.1
+GET https://uc13-projeto.onrender.com/companie/1 HTTP/1.1
 content-type: application/json  
 
 ### Editar a companhia (ID de exemplo - Requer Token)
-PUT http://localhost:3000/companie/6 HTTP/1.1
+PUT https://uc13-projeto.onrender.com/companie/2 HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
 {
-    "name": "TUCANO NACIONAL DE APRENDIZAGEM INDUSTRIAL SENAI",          
-    "places": "RUA ANTONIO MICUCCI 350",      
-    "fundaments": "Carlos alberto INDUSTRIAIS",    
-    "methods": "Taqueray MEDIO E TECNICO"         
+     "foundation": "2027-10-25", 
+     "name": "EMPRESA SEM METODO"
 }
 
+
 ### Deletar a companhia (Requer Token)
-DELETE http://localhost:3000/companie/2 HTTP/1.1
+DELETE https://uc13-projeto.onrender.com/companie/2 HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}

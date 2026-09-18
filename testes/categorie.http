@@ -1,19 +1,19 @@
 
 ### login diretor DIRECTOR
 # @name login
-POST http://localhost:3000/user/login HTTP/1.1
+POST https://uc13-projeto.onrender.com/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "vanessa@test.com",
-  "password": "1234567"
+  "email": "gabi@test.com",
+  "password": "test123"
 }
 
 
 
 ### Login de usuário
 # @name login
-POST http://localhost:3000/user/login HTTP/1.1
+POST https://uc13-projeto.onrender.com/user/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -22,17 +22,17 @@ Content-Type: application/json
 }
 
 ### criando categoria
-POST http://localhost:3000/categorie HTTP/1.1
+POST https://uc13-projeto.onrender.com/categorie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
 {
-    "name":"fisioterapia",          
-    "description":"fisioterapia e reabilitação"       
+    "name":"Administração",          
+    "description":"Administração e Gestão"       
 }
 
 ### criando categoria
-POST http://localhost:3000/categorie HTTP/1.1
+POST https://uc13-projeto.onrender.com/categorie HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
@@ -58,15 +58,15 @@ GET https://uc13-projeto-2xiu.onrender.com/categorie HTTP/1.1
 content-type: application/json
 
 ### Listar todas as categorias [LOCAL]
-GET http://localhost:3000/categorie HTTP/1.1
+GET https://uc13-projeto.onrender.com/categorie HTTP/1.1
 content-type: application/json
 
 ### Filtrar categorias por descrição (Exemplo de Query)
-GET http://localhost:3000/categorie?description=design HTTP/1.1
+GET https://uc13-projeto.onrender.com/categorie?description=design HTTP/1.1
 content-type: application/json
 
 ### Mostrar uma única categoria por ID (Local)
-GET http://localhost:3000/categorie/5 HTTP/1.1
+GET https://uc13-projeto.onrender.com/categorie/5 HTTP/1.1
 content-type: application/json
 
 ### Mostrar uma única categoria [PRODUÇÃO]
@@ -74,16 +74,17 @@ GET https://uc13-projeto-2xiu.onrender.com/categorie/1 HTTP/1.1
 content-type: application/json
 
 ### Editar Categoria (Requer Token de ADM)
-PUT https://uc13-projeto-2xiu.onrender.com/categorie/9 HTTP/1.1
+PUT https://uc13-projeto.onrender.com/categorie/2 HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
 
 {
-    "name": "Estética Avançada",          
-    "description": "Curso presencial e a distância na área de estética, focando em conceitos, estilos, técnicas e tendências da área."       
+    "name": "batatinha",          
+    "description": " "       
 }
 
+
 ### Deletar Categoria 
-DELETE http://localhost:3000/categorie/1 HTTP/1.1
+DELETE https://uc13-projeto.onrender.com/categorie/1 HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.token}}
