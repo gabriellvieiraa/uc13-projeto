@@ -371,6 +371,10 @@ export async function loginUser(req, res, _next) {
       return res.status(401).json({ error: "E-mail ou senha incorretos." });
     }
 
+    if (user.status === 'INATIVO') {
+      return res.status(403).json({ error: "Seu acesso está inativo. Entre em contato com a administração." });
+    }
+
     // Compara a senha
     const isPasswordValid = await bcrypt.compare(password, user.password);
 

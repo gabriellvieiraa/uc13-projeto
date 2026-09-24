@@ -41,6 +41,8 @@ function isValidCNPJ(cnpj) {
 const createCompanySchema = z.object({
     name: z.string().trim().min(1, "O nome é obrigatório").regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/, "O nome não pode conter caracteres especiais ou números, apenas letras").toUpperCase(),
     cnpj: z.string().transform(v => v.replace(/[^\d]+/g, '')).refine(isValidCNPJ, { message: "CNPJ inválido. Verifique os dígitos numéricos." }),
+    email: z.string({ required_error: "O e-mail é obrigatório", invalid_type_error: "O e-mail deve ser um texto" }).email({ message: "Formato de e-mail inválido" }).max(255),
+    tel: z.string({ required_error: "O telefone é obrigatório", invalid_type_error: "O telefone deve ser um texto" }).min(1, "O telefone é obrigatório"),
     foundation: z.string()
         .datetime({ message: "A data de fundação deve estar no formato ISO-8601 (ex: 2023-01-01T00:00:00.000Z)" })
         .refine((data) => {
@@ -57,6 +59,8 @@ const createCompanySchema = z.object({
 
 const updateCompanySchema = z.object({
     name: z.string().trim().min(1, "O nome não pode ser vazio").regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/, "O nome não pode conter caracteres especiais ou números, apenas letras").toUpperCase().optional(),
+    email: z.string().email({ message: "Formato de e-mail inválido" }).max(255).optional(),
+    tel: z.string().min(1, "O telefone não pode ser vazio").optional(),
     places: z.string().trim().min(1, "O local não pode ser vazio").toUpperCase().optional(),
     fundaments: z.string().trim().min(1, "Os fundamentos não podem ser vazios").toUpperCase().optional(),
     methods: z.string().trim().min(1, "Os métodos não podem ser vazios").toUpperCase().optional()
@@ -122,11 +126,12 @@ export async function readCompanie(req, res, _next) {
         const { name, cnpj, places, fundaments, methods } = req.query; // agora lê da URL (GET) adequadamente
         let consult = {};
 
-        if (name) consult.name = { contains: name.trim().toUpperCase() };
+        // mode: 'insensitive' é necessário no PostgreSQL para busca case-insensitive
+        if (name) consult.name = { contains: name.trim(), mode: 'insensitive' };
         if (cnpj) consult.cnpj = { contains: cnpj.replace(/[^\d]+/g, '') }; // ignora máscara na busca
-        if (places) consult.places = { contains: places.trim().toUpperCase() };
-        if (fundaments) consult.fundaments = { contains: fundaments.trim().toUpperCase() };
-        if (methods) consult.methods = { contains: methods.trim().toUpperCase() };
+        if (places) consult.places = { contains: places.trim(), mode: 'insensitive' };
+        if (fundaments) consult.fundaments = { contains: fundaments.trim(), mode: 'insensitive' };
+        if (methods) consult.methods = { contains: methods.trim(), mode: 'insensitive' };
 
         // Observação: foundation foi removido da consulta com contains porque Prisma
         // não suporta o operador 'contains' para campos DateTime.
@@ -151,9 +156,11 @@ export async function showCompanie(req, res, _next) {
             return res.status(404).json({ error: `Empresa com ID ${id} não localizada.` });
         }
 
+        // Incrementa o ranking (+1) a cada visualização de detalhes e inclui os cursos
         c = await prisma.company.update({
             where: { id: c.id },
-            data: { ranking: { increment: 1 } }
+            data: { ranking: { increment: 1 } },
+            include: { courses: true }
         });
 
         return res.status(200).json(c);
@@ -199,6 +206,8 @@ export async function editCompanie(req, res, _next) {
         c = attachSave(c, 'company');
 
         if (data.name) c.name = data.name;
+        if (data.email) c.email = data.email;
+        if (data.tel) c.tel = data.tel;
         if (data.places) c.places = data.places;
         if (data.fundaments) c.fundaments = data.fundaments;
         if (data.methods) c.methods = data.methods;

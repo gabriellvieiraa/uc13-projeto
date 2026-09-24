@@ -51,6 +51,8 @@ model Company {
   id            Int           @id @default(autoincrement())
   name          String        @unique
   cnpj          String        @unique
+  email         String        @default("")
+  tel           String        @default("")
   foundation    DateTime      
   places        String
   fundaments    String
