@@ -53,6 +53,7 @@ model Company {
   cnpj          String        @unique
   email         String        @default("")
   tel           String        @default("")
+  urlImg        String        @default("")
   foundation    DateTime      
   places        String
   fundaments    String

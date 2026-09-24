@@ -43,6 +43,7 @@ const createCompanySchema = z.object({
     cnpj: z.string().transform(v => v.replace(/[^\d]+/g, '')).refine(isValidCNPJ, { message: "CNPJ inválido. Verifique os dígitos numéricos." }),
     email: z.string({ required_error: "O e-mail é obrigatório", invalid_type_error: "O e-mail deve ser um texto" }).email({ message: "Formato de e-mail inválido" }).max(255),
     tel: z.string({ required_error: "O telefone é obrigatório", invalid_type_error: "O telefone deve ser um texto" }).min(1, "O telefone é obrigatório"),
+    urlImg: z.string().optional(),
     foundation: z.string()
         .datetime({ message: "A data de fundação deve estar no formato ISO-8601 (ex: 2023-01-01T00:00:00.000Z)" })
         .refine((data) => {
@@ -61,6 +62,7 @@ const updateCompanySchema = z.object({
     name: z.string().trim().min(1, "O nome não pode ser vazio").regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/, "O nome não pode conter caracteres especiais ou números, apenas letras").toUpperCase().optional(),
     email: z.string().email({ message: "Formato de e-mail inválido" }).max(255).optional(),
     tel: z.string().min(1, "O telefone não pode ser vazio").optional(),
+    urlImg: z.string().optional(),
     places: z.string().trim().min(1, "O local não pode ser vazio").toUpperCase().optional(),
     fundaments: z.string().trim().min(1, "Os fundamentos não podem ser vazios").toUpperCase().optional(),
     methods: z.string().trim().min(1, "Os métodos não podem ser vazios").toUpperCase().optional()
@@ -208,6 +210,7 @@ export async function editCompanie(req, res, _next) {
         if (data.name) c.name = data.name;
         if (data.email) c.email = data.email;
         if (data.tel) c.tel = data.tel;
+        if (data.urlImg !== undefined) c.urlImg = data.urlImg;
         if (data.places) c.places = data.places;
         if (data.fundaments) c.fundaments = data.fundaments;
         if (data.methods) c.methods = data.methods;
